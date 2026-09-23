@@ -1,0 +1,9 @@
+ROI Detection APKs
+==================
+
+FP32:
+https://github.com/Apurbo5057/SpatialNet-real-time-inference-app/releases/latest/download/app-fp32-debug.apk
+
+FP16-source:
+https://github.com/Apurbo5057/SpatialNet-real-time-inference-app/releases/latest/download/app-fromFp16-debug.apk
+
