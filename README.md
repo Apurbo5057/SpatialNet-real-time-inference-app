@@ -17,14 +17,19 @@ The two apps have different Android application IDs, so they can be installed to
 
 ### Download from a GitHub Release
 
-Once this project has a published release with both APKs attached:
+When a release is published, use the [latest release page](https://github.com/Apurbo5057/SpatialNet-real-time-inference-app/releases/latest). The APK links will be:
 
-1. Open the **new repository's URL**, then open **Releases**. The latest release is also at `<repository URL>/releases/latest`.
+- [Download FP32 APK](https://github.com/Apurbo5057/SpatialNet-real-time-inference-app/releases/latest/download/app-fp32-debug.apk)
+- [Download FP16-source APK](https://github.com/Apurbo5057/SpatialNet-real-time-inference-app/releases/latest/download/app-fromFp16-debug.apk)
+
+To install one:
+
+1. Open the [repository](https://github.com/Apurbo5057/SpatialNet-real-time-inference-app), then open **Releases** and select the latest published release.
 2. Under that release's **Assets**, select `app-fp32-debug.apk` or `app-fromFp16-debug.apk`. Download the **APK asset**, not the automatically generated "Source code" ZIP or tarball. GitHub's [release documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases) describes the latest-release link format.
 3. On your Android phone, open the downloaded APK and follow the install prompts. If Android asks you to allow installs from the browser or file manager you used, enable that source in the phone's settings and retry the APK. Available prompts can differ by Android version and device policy.
 4. Open the app, grant **Camera** permission, and tap **Start Inference**. Check the model badge against the table above. The live image shows the full analyzed frame; black margins can appear so it is not cropped. Tap **Capture** to save an annotated JPEG to the gallery.
 
-The repository URL and release do not exist in this README yet because the new GitHub destination has not been provided or published. APKs are attached to the release separately; they are not stored in Git history.
+The APK links above work after those files are attached to a published release. APKs are release assets, not files stored in Git history.
 
 ### Build and install from source
 
