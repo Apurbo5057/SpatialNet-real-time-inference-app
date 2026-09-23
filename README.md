@@ -4,6 +4,57 @@ This Android app watches the back camera for a hand, determines whether it is po
 
 **Want to see every image stage?** Open [README_FIXED.md](image_walkthrough/README_FIXED.md) and its new visual flow. The [earlier walkthrough](image_walkthrough/README.md) remains as a record of the cropped-preview problem.
 
+## Get the Android app
+
+The app requires **Android 7.0 (API 24) or newer** and a back camera. Choose one APK:
+
+| Release asset | Model bundled in that APK | App label | Model badge |
+| --- | --- | --- | --- |
+| `app-fp32-debug.apk` | `spatialnet_v4.onnx` (float32 weights) | ROI Detection FP32 | `spatialnet_v4` / `76710641` |
+| `app-fromFp16-debug.apk` | `spatialnet_fastest_from_fp16.onnx` (FLOAT16 stored weights; float32 input/output) | ROI Detection FP16 Source | `spatialnet_fastest_from_fp16` / `ed53f221` |
+
+The two apps have different Android application IDs, so they can be installed together for comparison. Both use the same camera, preprocessing, preview, overlay, and Capture code. Only the bundled model differs. The badge in the app is calculated from the installed model bytes; its short digest helps distinguish an old installation from the intended build.
+
+### Download from a GitHub Release
+
+Once this project has a published release with both APKs attached:
+
+1. Open the **new repository's URL**, then open **Releases**. The latest release is also at `<repository URL>/releases/latest`.
+2. Under that release's **Assets**, select `app-fp32-debug.apk` or `app-fromFp16-debug.apk`. Download the **APK asset**, not the automatically generated "Source code" ZIP or tarball. GitHub's [release documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases) describes the latest-release link format.
+3. On your Android phone, open the downloaded APK and follow the install prompts. If Android asks you to allow installs from the browser or file manager you used, enable that source in the phone's settings and retry the APK. Available prompts can differ by Android version and device policy.
+4. Open the app, grant **Camera** permission, and tap **Start Inference**. Check the model badge against the table above. The live image shows the full analyzed frame; black margins can appear so it is not cropped. Tap **Capture** to save an annotated JPEG to the gallery.
+
+The repository URL and release do not exist in this README yet because the new GitHub destination has not been provided or published. APKs are attached to the release separately; they are not stored in Git history.
+
+### Build and install from source
+
+Install Android Studio with **Android SDK 35** and a **JDK 17 or newer**. Open the repository root as an Android project, let Gradle sync, and connect an Android device with USB debugging if you want to run from Android Studio. The Gradle wrapper downloads the configured Gradle version when needed.
+
+From the repository root, build both debug variants:
+
+```powershell
+# Windows PowerShell
+.\gradlew.bat assembleFp32Debug assembleFromFp16Debug
+```
+
+```sh
+# macOS or Linux
+./gradlew assembleFp32Debug assembleFromFp16Debug
+```
+
+The outputs are:
+
+```text
+app/build/outputs/apk/fp32/debug/app-fp32-debug.apk
+app/build/outputs/apk/fromFp16/debug/app-fromFp16-debug.apk
+```
+
+To install from a computer with Android Debug Bridge, use `adb install -r <path-to-apk>` for each APK. In Android Studio, select the `fp32Debug` or `fromFp16Debug` build variant before pressing Run. These are **debug builds**; distributing a signed production release would require a release signing configuration.
+
+### Visual walkthrough
+
+The [fixed visual walkthrough](image_walkthrough/README_FIXED.md) follows a real sample photo through rotation, 160 x 160 model input, normalized tensor, model output, fitted live view, and saved capture. Its generated images are in `image_walkthrough/fixed_output/` and `image_walkthrough/output/`. To regenerate them, install [the Python requirements](image_walkthrough/requirements.txt) and run `python image_walkthrough/make_walkthrough.py` from the repository root. Python is only needed for this explanation; it is not needed to build or use the Android app.
+
 ## Repository map
 
 | Path | Purpose |
@@ -106,8 +157,6 @@ The saved overlay uses the same normalized-coordinate formulas, replacing `W` an
 
 The bitmap is encoded as **JPEG at quality 95** with a name like `ROI_Screenshot_<timestamp>.jpg`. On Android 10 and newer, the requested gallery folder is `Pictures/ROIDetection`. Saved width and height are exactly those of the rotated analysis bitmap; there is no additional resize or crop. The screen's black fit margins are not saved.
 
-## Run
+## Model variants
 
-Open the repository in Android Studio, choose a model flavor, run the app on a device, and grant camera permission. On Windows, run `./gradlew.bat assembleFp32Debug assembleFromFp16Debug`. Gradle writes `app/build/outputs/apk/fp32/debug/app-fp32-debug.apk` and `app/build/outputs/apk/fromFp16/debug/app-fromFp16-debug.apk`. The FP32 app keeps application ID `com.example.roidetection`; the alternative uses `com.example.roidetection.fromfp16`, so both can be installed together. Their app labels and model badges identify which weights are running. Generated build directories and APKs are build outputs.
-
-The supplied `spatialnet_fastest_from_fp16.onnx` has **FLOAT16 stored weights** and **float32 input and outputs**. The Android preprocessing and output parsing therefore remain float32, while the FP16-source APK bundles the smaller model file. Actual execution speed and numerical results can vary by phone and ONNX Runtime execution provider.
+The FP32 app uses application ID `com.example.roidetection`; the alternative uses `com.example.roidetection.fromfp16`. The supplied `spatialnet_fastest_from_fp16.onnx` has **FLOAT16 stored weights** and **float32 input and outputs**. The Android preprocessing and output parsing therefore remain float32, while the FP16-source APK bundles the smaller model file. Actual execution speed and numerical results can vary by phone and ONNX Runtime execution provider.
