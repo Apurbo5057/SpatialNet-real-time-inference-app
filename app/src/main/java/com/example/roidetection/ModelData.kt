@@ -13,6 +13,12 @@ data class ROIResult(
     val pointingDir: Direction? = null,
     val roiBBox: BBox? = null,
     val objectness: Float = 0f,
+    val handConf: Float = 0f,
+    val pointConf: Float = 0f,
+    val roiConf: Float = 0f,
+    val isHandDetected: Boolean = false,
+    val isPointing: Boolean = false,
+    val isRoiDetected: Boolean = false,
     val inferenceTimeMs: Long = 0L,
     val rawOutput: FloatArray? = null
 )

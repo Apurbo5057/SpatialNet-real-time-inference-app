@@ -11,15 +11,17 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * SpatialNet-Fastest ONNX model for ROI detection.
- * Input: 1x3x160x160 (NCHW), ImageNet normalized
- * Output: 13 values (hand_bbox, fingertip, pointing_dir, roi_bbox, objectness)
+ * SpatialNet-Fastest v3 ONNX model for ROI detection.
+ * Input:  "image" 1x3x160x160 (NCHW), RGB, ImageNet normalized
+ * Output: hand (cx,cy,w,h), fingertip (x,y), angle (sin,cos), roi (cx,cy,w,h)
+ *         and the three cascade gates hand_conf / point_conf / roi_conf,
+ *         all three of which are RAW LOGITS and need a sigmoid.
  */
 class SpatialNetModel(private val context: Context) {
 
     companion object {
         private const val TAG = "SpatialNetModel"
-        private const val MODEL_FILE = "model.onnx"
+        private val MODEL_FILE = ModelInfo.SPATIALNET_ASSET
         private const val INPUT_SIZE = 160
 
         private val MEAN = floatArrayOf(0.485f, 0.456f, 0.406f)
@@ -32,6 +34,10 @@ class SpatialNetModel(private val context: Context) {
     private var session: OrtSession? = null
     private var isInitialized = false
 
+    /** Identity of the weights this session loaded; null until initialized. */
+    var modelInfo: ModelInfo? = null
+        private set
+
     fun initialize() {
         if (isInitialized) return
         try {
@@ -41,7 +47,8 @@ class SpatialNetModel(private val context: Context) {
             env = OrtEnvironment.getEnvironment()
 
             val modelBytes = context.assets.open(MODEL_FILE).use { it.readBytes() }
-            Log.i(TAG, "Model file loaded, size: ${modelBytes.size} bytes")
+            modelInfo = ModelInfo.of(MODEL_FILE, modelBytes)
+            Log.i(TAG, "Loaded model: $modelInfo")
 
             val options = OrtSession.SessionOptions().apply {
                 addConfigEntry("session.intra_op_thread_count", "4")
@@ -102,40 +109,115 @@ class SpatialNetModel(private val context: Context) {
         val results = sess.run(mapOf(inputName to inputTensor))
         inputTensor.close()
 
-        // Parse output
-        val outputTensor = results[0] as OnnxTensor
-        val outputBuffer = outputTensor.floatBuffer
-        val output = FloatArray(outputBuffer.remaining())
-        outputBuffer.get(output)
-        outputTensor.close()
+        // Parse outputs by name
+        var handTensor: OnnxTensor? = null
+        var fingertipTensor: OnnxTensor? = null
+        var angleTensor: OnnxTensor? = null
+        var roiTensor: OnnxTensor? = null
+        var handConfTensor: OnnxTensor? = null
+        var pointConfTensor: OnnxTensor? = null
+        var roiConfTensor: OnnxTensor? = null
+
+        for ((name, value) in results) {
+            val tensor = value as? OnnxTensor ?: continue
+            when (name) {
+                "hand" -> handTensor = tensor
+                "fingertip" -> fingertipTensor = tensor
+                "angle" -> angleTensor = tensor
+                "roi" -> roiTensor = tensor
+                "hand_conf" -> handConfTensor = tensor
+                "point_conf" -> pointConfTensor = tensor
+                "roi_conf" -> roiConfTensor = tensor
+            }
+        }
+
+        val handArray = FloatArray(4)
+        handTensor?.floatBuffer?.get(handArray)
+
+        val fingertipArray = FloatArray(2)
+        fingertipTensor?.floatBuffer?.get(fingertipArray)
+
+        val angleArray = FloatArray(2)
+        angleTensor?.floatBuffer?.get(angleArray)
+
+        val roiArray = FloatArray(4)
+        roiTensor?.floatBuffer?.get(roiArray)
+
+        val handConfArray = FloatArray(1)
+        handConfTensor?.floatBuffer?.get(handConfArray)
+
+        val pointConfArray = FloatArray(1)
+        pointConfTensor?.floatBuffer?.get(pointConfArray)
+
+        val roiConfArray = FloatArray(1)
+        roiConfTensor?.floatBuffer?.get(roiConfArray)
+
         results.close()
 
         val inferenceTime = System.currentTimeMillis() - startTime
-        Log.d(TAG, "Inference complete in ${inferenceTime}ms, output size: ${output.size}")
-        Log.d(TAG, "First 13 values: ${output.take(13)}")
+        Log.d(TAG, "Inference complete in ${inferenceTime}ms")
 
-        return parseOutput(output, inferenceTime, confidenceThreshold)
+        return parseOutput(
+            hand = handArray,
+            fingertip = fingertipArray,
+            angle = angleArray,
+            roi = roiArray,
+            handConf = handConfArray[0],
+            pointConf = pointConfArray[0],
+            roiConf = roiConfArray[0],
+            inferenceTimeMs = inferenceTime
+        )
     }
 
-    private fun parseOutput(output: FloatArray, inferenceTimeMs: Long, threshold: Float): ROIResult {
-        if (output.size < 13) {
-            Log.w(TAG, "Unexpected output size: ${output.size}, expected 13")
-            return ROIResult(inferenceTimeMs = inferenceTimeMs, rawOutput = output)
-        }
+    private fun sigmoid(x: Float): Float {
+        return 1.0f / (1.0f + kotlin.math.exp(-x.toDouble()).toFloat())
+    }
 
-        val objectness = output[12]
-        if (objectness < threshold) {
-            return ROIResult(objectness = objectness, inferenceTimeMs = inferenceTimeMs, rawOutput = output)
-        }
+    private fun parseOutput(
+        hand: FloatArray,
+        fingertip: FloatArray,
+        angle: FloatArray,
+        roi: FloatArray,
+        handConf: Float,
+        pointConf: Float,
+        roiConf: Float,
+        inferenceTimeMs: Long
+    ): ROIResult {
+        val handProb = sigmoid(handConf)
+        val pointProb = sigmoid(pointConf)
+        val roiProb = sigmoid(roiConf)
+
+        val isHand = handProb >= 0.5f
+        val isPointing = isHand && pointProb >= 0.5f
+        val isRoi = isPointing && roiProb >= 0.5f
+
+        val handBBox = if (isHand) BBox(hand[0], hand[1], hand[2], hand[3]) else null
+        val fingertipPoint = if (isPointing) Point(fingertip[0], fingertip[1]) else null
+        val pointingDir = if (isPointing) Direction(angle[0], angle[1]) else null
+        val roiBBox = if (isRoi) BBox(roi[0], roi[1], roi[2], roi[3]) else null
+
+        val objectness = if (isPointing) pointProb else handProb
 
         return ROIResult(
-            handBBox = BBox(output[0], output[1], output[2], output[3]),
-            fingertip = Point(output[4], output[5]),
-            pointingDir = Direction(output[6], output[7]),
-            roiBBox = BBox(output[8], output[9], output[10], output[11]),
+            handBBox = handBBox,
+            fingertip = fingertipPoint,
+            pointingDir = pointingDir,
+            roiBBox = roiBBox,
             objectness = objectness,
+            handConf = handProb,
+            pointConf = pointProb,
+            roiConf = roiProb,
+            isHandDetected = isHand,
+            isPointing = isPointing,
+            isRoiDetected = isRoi,
             inferenceTimeMs = inferenceTimeMs,
-            rawOutput = output
+            rawOutput = floatArrayOf(
+                hand[0], hand[1], hand[2], hand[3],
+                fingertip[0], fingertip[1],
+                angle[0], angle[1],
+                roi[0], roi[1], roi[2], roi[3],
+                objectness
+            )
         )
     }
 

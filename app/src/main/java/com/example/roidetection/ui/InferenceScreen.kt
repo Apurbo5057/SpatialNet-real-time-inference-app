@@ -4,14 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +41,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,13 +51,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -66,7 +66,14 @@ import androidx.lifecycle.LifecycleEventObserver
 import android.util.Log
 import com.example.roidetection.CombinedResult
 import com.example.roidetection.InferenceViewModel
+import com.example.roidetection.ModelInfo
 import java.util.concurrent.Executors
+import android.graphics.Bitmap
+import android.content.ContentValues
+import android.provider.MediaStore
+import android.widget.Toast
+import androidx.compose.material3.FloatingActionButton
+import kotlinx.coroutines.launch
 
 private const val CAMERA_PERMISSION_REQUEST_CODE = 1001
 
@@ -79,11 +86,16 @@ fun InferenceScreen(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val activity = context as? Activity
+    val coroutineScope = rememberCoroutineScope()
 
     val result by viewModel.result.collectAsState()
     val isModelReady by viewModel.isModelReady.collectAsState()
     val modelError by viewModel.modelError.collectAsState()
     val fps by viewModel.fps.collectAsState()
+    val modelInfo by viewModel.modelInfo.collectAsState()
+    // Falls back to the bundled asset so the badge is readable while the
+    // ONNX session is still starting up.
+    val bundledModelInfo = remember { ModelInfo.read(context) }
 
     var hasCameraPermission by remember {
         mutableStateOf(
@@ -146,6 +158,34 @@ fun InferenceScreen(
                 ),
                 modifier = Modifier.statusBarsPadding()
             )
+        },
+        floatingActionButton = {
+            if (hasCameraPermission && isModelReady) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            val currentResult = viewModel.result.value
+                            val compositeBitmap = captureWithOverlays(currentResult)
+                            if (compositeBitmap != null) {
+                                val saved = saveBitmapToGallery(context, compositeBitmap)
+                                compositeBitmap.recycle()
+                                if (saved) {
+                                    Toast.makeText(context, "Screenshot saved to Gallery", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "Failed to save screenshot", Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
+                                Toast.makeText(context, "No camera frame available", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    },
+                    containerColor = Color.White.copy(alpha = 0.8f),
+                    contentColor = Color.Black,
+                    modifier = Modifier.padding(bottom = 64.dp)
+                ) {
+                    Text("Capture", modifier = Modifier.padding(horizontal = 16.dp), fontWeight = FontWeight.Bold)
+                }
+            }
         }
     ) { paddingValues ->
         Box(
@@ -224,12 +264,12 @@ fun InferenceScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Loading models...",
+                        text = "Loading model...",
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "SpatialNet + YOLO Gesture",
+                        text = "SpatialNet v4",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     )
@@ -241,6 +281,14 @@ fun InferenceScreen(
                     result = result
                 )
             }
+
+            // Model identity badge, top-left
+            ModelBadge(
+                info = modelInfo ?: bundledModelInfo,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(12.dp)
+            )
 
             // Stats overlay at bottom
             if (hasCameraPermission && isModelReady) {
@@ -258,6 +306,8 @@ fun InferenceScreen(
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        val catLabel = getCategoryLabel(result)
+                        val catColor = getCategoryColor(result)
                         Text(
                             text = "FPS: ${"%.1f".format(fps)}",
                             color = Color.White,
@@ -271,13 +321,19 @@ fun InferenceScreen(
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = if (result.isPointing) "POINTING" else "NON-POINT",
-                            color = if (result.isPointing) Color(0xFF4CAF50) else Color(0xFFF44336),
+                            text = catLabel,
+                            color = catColor,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold
                         )
+                        val activeConf = when {
+                            !result.roiResult.isHandDetected -> 0f
+                            !result.roiResult.isPointing -> result.roiResult.handConf
+                            !result.roiResult.isRoiDetected -> result.roiResult.pointConf
+                            else -> result.roiResult.roiConf
+                        }
                         Text(
-                            text = "${"%.0f".format(result.gestureResult.confidence * 100)}%",
+                            text = "${"%.0f".format(activeConf * 100)}%",
                             color = Color.White,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium
@@ -286,6 +342,36 @@ fun InferenceScreen(
                 }
             }
         }
+    }
+}
+
+private fun getCategoryLabel(result: CombinedResult): String {
+    val roi = result.roiResult
+    return when {
+        !roi.isHandDetected -> "NO HAND"
+        !roi.isPointing -> "NON-POINTING"
+        !roi.isRoiDetected -> "POINTING-EMPTY"
+        else -> "POINTING"
+    }
+}
+
+private fun getCategoryColor(result: CombinedResult): Color {
+    val roi = result.roiResult
+    return when {
+        !roi.isHandDetected -> Color(0xFF9E9E9E) // Gray
+        !roi.isPointing -> Color(0xFFFF9800)     // Orange
+        !roi.isRoiDetected -> Color(0xFF9C27B0)  // Purple
+        else -> Color(0xFF4CAF50)                // Green
+    }
+}
+
+private fun getCategoryColorAndroid(result: CombinedResult): Int {
+    val roi = result.roiResult
+    return when {
+        !roi.isHandDetected -> android.graphics.Color.GRAY
+        !roi.isPointing -> android.graphics.Color.rgb(255, 152, 0)     // Orange
+        !roi.isRoiDetected -> android.graphics.Color.rgb(156, 39, 176) // Purple
+        else -> android.graphics.Color.GREEN
     }
 }
 
@@ -299,24 +385,19 @@ private fun CameraPreviewWithOverlay(
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     val executor = remember { Executors.newSingleThreadExecutor() }
 
-    val previewView = remember {
-        PreviewView(context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            scaleType = PreviewView.ScaleType.FILL_CENTER
-        }
-    }
-
     val roiResult = result.roiResult
     val isPointing = result.isPointing
+    val frame = result.frame
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        AndroidView(
-            factory = { previewView },
-            modifier = Modifier.fillMaxSize()
-        )
+    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+        frame?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "Live camera analysis frame",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         Canvas(
             modifier = Modifier.fillMaxSize()
@@ -324,7 +405,14 @@ private fun CameraPreviewWithOverlay(
             val canvasWidth = size.width
             val canvasHeight = size.height
 
-            if (canvasWidth <= 0f || canvasHeight <= 0f) return@Canvas
+            if (canvasWidth <= 0f || canvasHeight <= 0f || frame == null) return@Canvas
+
+            // ContentScale.Fit: the full frame and its annotations share one transform.
+            val scale = minOf(canvasWidth / frame.width, canvasHeight / frame.height)
+            val imageWidth = frame.width * scale
+            val imageHeight = frame.height * scale
+            val offsetX = (canvasWidth - imageWidth) / 2f
+            val offsetY = (canvasHeight - imageHeight) / 2f
 
             if (isPointing) {
                 // POINTING MODE: Green ROI, Blue hand, Red fingertip, Yellow arrow
@@ -334,8 +422,10 @@ private fun CameraPreviewWithOverlay(
                     val corners = bbox.toCorners().clamp()
                     drawDetectionBox(
                         corners = corners,
-                        canvasWidth = canvasWidth,
-                        canvasHeight = canvasHeight,
+                        canvasWidth = imageWidth,
+                        canvasHeight = imageHeight,
+                        offsetX = offsetX,
+                        offsetY = offsetY,
                         color = Color(0xFF2196F3),
                         label = "Hand",
                         strokeWidth = 3f
@@ -347,8 +437,10 @@ private fun CameraPreviewWithOverlay(
                     val corners = bbox.toCorners().clamp()
                     drawDetectionBox(
                         corners = corners,
-                        canvasWidth = canvasWidth,
-                        canvasHeight = canvasHeight,
+                        canvasWidth = imageWidth,
+                        canvasHeight = imageHeight,
+                        offsetX = offsetX,
+                        offsetY = offsetY,
                         color = Color(0xFF4CAF50),
                         label = "ROI",
                         strokeWidth = 3f
@@ -357,8 +449,8 @@ private fun CameraPreviewWithOverlay(
 
                 // Draw fingertip point (red)
                 roiResult.fingertip?.let { ft ->
-                    val x = ft.x * canvasWidth
-                    val y = ft.y * canvasHeight
+                    val x = offsetX + ft.x * imageWidth
+                    val y = offsetY + ft.y * imageHeight
 
                     drawCircle(
                         color = Color(0xFFF44336),
@@ -388,8 +480,8 @@ private fun CameraPreviewWithOverlay(
                 // Draw pointing direction arrow (yellow)
                 roiResult.fingertip?.let { ft ->
                     roiResult.pointingDir?.let { dir ->
-                        val startX = ft.x * canvasWidth
-                        val startY = ft.y * canvasHeight
+                        val startX = offsetX + ft.x * imageWidth
+                        val startY = offsetY + ft.y * imageHeight
                         val arrowLength = 80f
                         val angle = dir.angleRadians()
                         val endX = startX + arrowLength * kotlin.math.cos(angle.toDouble()).toFloat()
@@ -432,8 +524,10 @@ private fun CameraPreviewWithOverlay(
                     val corners = bbox.toCorners().clamp()
                     drawDetectionBox(
                         corners = corners,
-                        canvasWidth = canvasWidth,
-                        canvasHeight = canvasHeight,
+                        canvasWidth = imageWidth,
+                        canvasHeight = imageHeight,
+                        offsetX = offsetX,
+                        offsetY = offsetY,
                         color = Color(0xFFF44336),
                         label = "Non-Pointing",
                         strokeWidth = 3f
@@ -449,10 +543,6 @@ private fun CameraPreviewWithOverlay(
             val cameraProvider = cameraProviderFuture.get()
             Log.i("InferenceScreen", "CameraProvider obtained")
 
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(previewView.surfaceProvider)
-            }
-
             val imageAnalysis = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
@@ -466,7 +556,6 @@ private fun CameraPreviewWithOverlay(
             cameraProvider.bindToLifecycle(
                 lifecycleOwner,
                 CameraSelector.DEFAULT_BACK_CAMERA,
-                preview,
                 imageAnalysis
             )
             Log.i("InferenceScreen", "Camera bound successfully")
@@ -491,14 +580,16 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawDetectionBox(
     corners: com.example.roidetection.Corners,
     canvasWidth: Float,
     canvasHeight: Float,
+    offsetX: Float,
+    offsetY: Float,
     color: Color,
     label: String,
     strokeWidth: Float
 ) {
-    val x1 = corners.x1 * canvasWidth
-    val y1 = corners.y1 * canvasHeight
-    val x2 = corners.x2 * canvasWidth
-    val y2 = corners.y2 * canvasHeight
+    val x1 = offsetX + corners.x1 * canvasWidth
+    val y1 = offsetY + corners.y1 * canvasHeight
+    val x2 = offsetX + corners.x2 * canvasWidth
+    val y2 = offsetY + corners.y2 * canvasHeight
     val boxWidth = x2 - x1
     val boxHeight = y2 - y1
 
@@ -536,4 +627,219 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawDetectionBox(
             typeface = android.graphics.Typeface.DEFAULT_BOLD
         }
     )
+}
+
+/**
+ * Captures the latest camera frame and draws detection overlays on it.
+ * This avoids the PixelCopy issue where SurfaceView content (camera preview)
+ * isn't captured, resulting in black backgrounds.
+ */
+private fun captureWithOverlays(
+    result: CombinedResult
+): Bitmap? {
+    val frameBitmap = result.frame ?: return null
+
+    // Create a mutable copy to draw overlays on
+    val outputBitmap = frameBitmap.copy(Bitmap.Config.ARGB_8888, true)
+
+    val canvas = android.graphics.Canvas(outputBitmap)
+    val w = outputBitmap.width.toFloat()
+    val h = outputBitmap.height.toFloat()
+
+    val roiResult = result.roiResult
+    val isPointing = result.isPointing
+
+    if (isPointing) {
+        // Draw hand bounding box (blue)
+        roiResult.handBBox?.let { bbox ->
+            val corners = bbox.toCorners().clamp()
+            drawBoxOnCanvas(canvas, corners, w, h, android.graphics.Color.BLUE, "Hand", 4f)
+        }
+
+        // Draw ROI bounding box (green)
+        roiResult.roiBBox?.let { bbox ->
+            val corners = bbox.toCorners().clamp()
+            drawBoxOnCanvas(canvas, corners, w, h, android.graphics.Color.GREEN, "ROI", 4f)
+        }
+
+        // Draw fingertip point (red)
+        roiResult.fingertip?.let { ft ->
+            val x = ft.x * w
+            val y = ft.y * h
+            val paint = android.graphics.Paint().apply {
+                color = android.graphics.Color.RED
+                style = android.graphics.Paint.Style.STROKE
+                strokeWidth = 4f
+                isAntiAlias = true
+            }
+            canvas.drawCircle(x, y, 14f, paint)
+            paint.style = android.graphics.Paint.Style.FILL
+            canvas.drawCircle(x, y, 6f, paint)
+
+            val textPaint = android.graphics.Paint().apply {
+                color = android.graphics.Color.RED
+                textSize = 32f
+                isAntiAlias = true
+                typeface = android.graphics.Typeface.DEFAULT_BOLD
+            }
+            canvas.drawText("Fingertip", x + 18f, y - 10f, textPaint)
+        }
+
+        // Draw pointing direction arrow (yellow)
+        roiResult.fingertip?.let { ft ->
+            roiResult.pointingDir?.let { dir ->
+                val startX = ft.x * w
+                val startY = ft.y * h
+                val arrowLength = 90f
+                val angle = dir.angleRadians()
+                val endX = startX + arrowLength * kotlin.math.cos(angle.toDouble()).toFloat()
+                val endY = startY + arrowLength * kotlin.math.sin(angle.toDouble()).toFloat()
+
+                val arrowPaint = android.graphics.Paint().apply {
+                    color = android.graphics.Color.YELLOW
+                    strokeWidth = 5f
+                    style = android.graphics.Paint.Style.STROKE
+                    isAntiAlias = true
+                }
+                canvas.drawLine(startX, startY, endX, endY, arrowPaint)
+
+                // Arrowhead
+                val arrowHeadLen = 18f
+                val arrowAngle = Math.toRadians(30.0)
+                val a1 = angle + Math.PI + arrowAngle
+                val a2 = angle + Math.PI - arrowAngle
+                canvas.drawLine(
+                    endX, endY,
+                    endX + arrowHeadLen * kotlin.math.cos(a1).toFloat(),
+                    endY + arrowHeadLen * kotlin.math.sin(a1).toFloat(),
+                    arrowPaint
+                )
+                canvas.drawLine(
+                    endX, endY,
+                    endX + arrowHeadLen * kotlin.math.cos(a2).toFloat(),
+                    endY + arrowHeadLen * kotlin.math.sin(a2).toFloat(),
+                    arrowPaint
+                )
+            }
+        }
+    } else {
+        // NON-POINTING: Red hand box
+        roiResult.handBBox?.let { bbox ->
+            val corners = bbox.toCorners().clamp()
+            drawBoxOnCanvas(canvas, corners, w, h, android.graphics.Color.RED, "Non-Pointing", 4f)
+        }
+    }
+
+    // Draw stats bar at the bottom
+    val barPaint = android.graphics.Paint().apply {
+        color = android.graphics.Color.argb(180, 0, 0, 0)
+        style = android.graphics.Paint.Style.FILL
+    }
+    val barHeight = 50f
+    canvas.drawRect(0f, h - barHeight, w, h, barPaint)
+
+    val statsPaint = android.graphics.Paint().apply {
+        color = android.graphics.Color.WHITE
+        textSize = 28f
+        isAntiAlias = true
+        typeface = android.graphics.Typeface.DEFAULT_BOLD
+    }
+    val catLabel = getCategoryLabel(result)
+    val activeConf = when {
+        !result.roiResult.isHandDetected -> 0f
+        !result.roiResult.isPointing -> result.roiResult.handConf
+        !result.roiResult.isRoiDetected -> result.roiResult.pointConf
+        else -> result.roiResult.roiConf
+    }
+    val statsText = "${result.totalInferenceTimeMs}ms | $catLabel | ${"%.0f".format(activeConf * 100)}%"
+    canvas.drawText(statsText, 16f, h - 14f, statsPaint)
+
+    return outputBitmap
+}
+
+/**
+ * Draws a labeled bounding box with corner accents on an Android Canvas.
+ */
+private fun drawBoxOnCanvas(
+    canvas: android.graphics.Canvas,
+    corners: com.example.roidetection.Corners,
+    canvasW: Float,
+    canvasH: Float,
+    color: Int,
+    label: String,
+    strokeW: Float
+) {
+    val x1 = corners.x1 * canvasW
+    val y1 = corners.y1 * canvasH
+    val x2 = corners.x2 * canvasW
+    val y2 = corners.y2 * canvasH
+
+    val boxPaint = android.graphics.Paint().apply {
+        this.color = color
+        style = android.graphics.Paint.Style.STROKE
+        this.strokeWidth = strokeW
+        isAntiAlias = true
+    }
+    canvas.drawRect(x1, y1, x2, y2, boxPaint)
+
+    // Corner accents
+    val boxWidth = x2 - x1
+    val boxHeight = y2 - y1
+    val cornerLen = minOf(22f, boxWidth * 0.15f, boxHeight * 0.15f)
+    val cornerPaint = android.graphics.Paint().apply {
+        this.color = color
+        style = android.graphics.Paint.Style.STROKE
+        this.strokeWidth = strokeW + 2f
+        isAntiAlias = true
+    }
+    canvas.drawLine(x1, y1, x1 + cornerLen, y1, cornerPaint)
+    canvas.drawLine(x1, y1, x1, y1 + cornerLen, cornerPaint)
+    canvas.drawLine(x2, y1, x2 - cornerLen, y1, cornerPaint)
+    canvas.drawLine(x2, y1, x2, y1 + cornerLen, cornerPaint)
+    canvas.drawLine(x1, y2, x1 + cornerLen, y2, cornerPaint)
+    canvas.drawLine(x1, y2, x1, y2 - cornerLen, cornerPaint)
+    canvas.drawLine(x2, y2, x2 - cornerLen, y2, cornerPaint)
+    canvas.drawLine(x2, y2, x2, y2 - cornerLen, cornerPaint)
+
+    // Label
+    val textPaint = android.graphics.Paint().apply {
+        this.color = color
+        textSize = 32f
+        isAntiAlias = true
+        typeface = android.graphics.Typeface.DEFAULT_BOLD
+    }
+    canvas.drawText(label, x1 + 6f, y1 - 10f, textPaint)
+}
+
+private fun saveBitmapToGallery(context: Context, bitmap: Bitmap): Boolean {
+    val filename = "ROI_Screenshot_${System.currentTimeMillis()}.jpg"
+    val contentValues = ContentValues().apply {
+        put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/ROIDetection")
+            put(MediaStore.MediaColumns.IS_PENDING, 1)
+        }
+    }
+
+    val resolver = context.contentResolver
+    val imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues) ?: return false
+
+    try {
+        resolver.openOutputStream(imageUri).use { outputStream ->
+            if (outputStream != null) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)
+            }
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            contentValues.clear()
+            contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+            resolver.update(imageUri, contentValues, null, null)
+        }
+        return true
+    } catch (e: Exception) {
+        resolver.delete(imageUri, null, null)
+        return false
+    }
 }

@@ -15,14 +15,13 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * Combined inference result from both models.
+ * The exact analysis frame and the prediction made from it.
  */
 data class CombinedResult(
+    val frame: Bitmap? = null,
     val roiResult: ROIResult = ROIResult(),
-    val gestureResult: GestureResult = GestureResult(),
     val isPointing: Boolean = false,
-    val totalInferenceTimeMs: Long = 0L,
-    val yoloDiagInfo: String = ""
+    val totalInferenceTimeMs: Long = 0L
 )
 
 class InferenceViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,9 +30,8 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
         private const val TAG = "InferenceViewModel"
 
         // Temporal smoothing parameters (from Vercel's temporalFilter.js)
-        private const val WINDOW_SIZE = 5          // Keep last 5 YOLO results
+        private const val WINDOW_SIZE = 5
         private const val POINT_ENTER_THRESH = 0.30f  // Enter pointing state
-        private const val POINT_EXIT_THRESH = 0.15f   // Exit pointing state
     }
 
     private val _result = MutableStateFlow<CombinedResult>(CombinedResult())
@@ -51,8 +49,11 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
     private val _isRunning = MutableStateFlow(false)
     val isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
 
+    /** Weights the running session actually loaded, for the on-screen badge. */
+    private val _modelInfo = MutableStateFlow<ModelInfo?>(null)
+    val modelInfo: StateFlow<ModelInfo?> = _modelInfo.asStateFlow()
+
     private var spatialNetModel: SpatialNetModel? = null
-    private var yoloModel: YOLOGestureModel? = null
     private val isProcessing = AtomicBoolean(false)
 
     // FPS calculation
@@ -61,9 +62,8 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
     private var firstFrameLogged = false
 
     // Temporal smoothing state
-    private val gestureWindow = ArrayDeque<GestureResult>(WINDOW_SIZE)
+    private val gestureWindow = ArrayDeque<Pair<Boolean, Float>>(WINDOW_SIZE)
     private var currentPointingState = false
-    private var currentPointConfidence = 0f
 
     fun initializeModel() {
         if (_isModelReady.value) return
@@ -77,16 +77,11 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
                 val sn = SpatialNetModel(getApplication<Application>())
                 sn.initialize()
                 spatialNetModel = sn
-                Log.i(TAG, "SpatialNet initialized successfully")
-
-                Log.i(TAG, "Initializing YOLO gesture model...")
-                val yolo = YOLOGestureModel(getApplication<Application>())
-                yolo.initialize()
-                yoloModel = yolo
-                Log.i(TAG, "YOLO gesture model initialized successfully")
+                _modelInfo.value = sn.modelInfo
+                Log.i(TAG, "SpatialNet initialized successfully (${sn.modelInfo})")
 
                 _isModelReady.value = true
-                Log.i(TAG, "========== VIEWMODEL: All models initialized ==========")
+                Log.i(TAG, "========== VIEWMODEL: Model initialized ==========")
             } catch (e: Exception) {
                 _isModelReady.value = false
                 _modelError.value = e.message ?: "Unknown error loading models"
@@ -109,7 +104,10 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun processFrame(imageProxy: ImageProxy) {
-        if (!_isRunning.value) return
+        if (!_isRunning.value) {
+            imageProxy.close()
+            return
+        }
         if (isProcessing.getAndSet(true)) {
             imageProxy.close()
             return
@@ -127,28 +125,19 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
 
                 val startTime = System.currentTimeMillis()
 
-                // Run YOLO every frame for better temporal coverage
-                val gestureResult = try {
-                    yoloModel?.predict(rotatedBitmap) ?: GestureResult()
-                } catch (e: Exception) {
-                    Log.w(TAG, "YOLO inference error: ${e.message}")
-                    GestureResult()
-                }
-
                 // Run SpatialNet ROI detection
                 val roiResult = spatialNetModel?.predict(rotatedBitmap) ?: ROIResult()
 
                 val totalTime = System.currentTimeMillis() - startTime
 
-                // Apply temporal smoothing
-                val isPointing = applyTemporalSmoothing(gestureResult)
+                // Apply temporal smoothing using SpatialNet's unified outputs
+                val isPointing = applyTemporalSmoothing(roiResult)
 
                 val combined = CombinedResult(
+                    frame = rotatedBitmap,
                     roiResult = roiResult,
-                    gestureResult = gestureResult,
                     isPointing = isPointing,
-                    totalInferenceTimeMs = totalTime,
-                    yoloDiagInfo = gestureResult.diagnosticInfo
+                    totalInferenceTimeMs = totalTime
                 )
                 _result.value = combined
 
@@ -162,9 +151,8 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
                     lastFpsTime = now
                 }
 
-                if (rotatedBitmap !== bitmap) {
-                    rotatedBitmap.recycle()
-                }
+                // The displayed frame is owned by the result until Compose releases it.
+                if (rotatedBitmap !== bitmap) bitmap.recycle()
             } catch (e: Exception) {
                 Log.e(TAG, "Error processing frame: ${e.javaClass.simpleName}: ${e.message}", e)
             } finally {
@@ -178,25 +166,22 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
      * Apply temporal smoothing with sliding window voting + confidence hysteresis.
      * Inspired by Vercel's temporalFilter.js and burst-mode detection logic.
      */
-    private fun applyTemporalSmoothing(latestGesture: GestureResult): Boolean {
+    private fun applyTemporalSmoothing(latestResult: ROIResult): Boolean {
         // Add to sliding window
-        gestureWindow.addLast(latestGesture)
+        gestureWindow.addLast(latestResult.isPointing to latestResult.pointConf)
         if (gestureWindow.size > WINDOW_SIZE) {
             gestureWindow.removeFirst()
         }
 
         // Sliding window voting: if ANY frame in window detected pointing, consider it
-        val anyPointingInWindow = gestureWindow.any { it.isPointing }
+        val anyPointingInWindow = gestureWindow.any { it.first }
 
         // Best pointing confidence in window
         val bestPointConf = gestureWindow
-            .filter { it.isPointing }
-            .maxByOrNull { it.confidence }?.confidence ?: 0f
+            .filter { it.first }
+            .maxOfOrNull { it.second } ?: 0f
 
         // Best non-pointing confidence in window
-        val bestNonPointConf = gestureWindow
-            .filter { !it.isPointing }
-            .maxByOrNull { it.confidence }?.confidence ?: 0f
 
         // Confidence hysteresis with window voting
         val isPointing = when {
@@ -212,10 +197,8 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
 
         // Update state
         currentPointingState = isPointing
-        currentPointConfidence = if (isPointing) bestPointConf else bestNonPointConf
-
         Log.d(TAG, "Temporal: window=${gestureWindow.size} anyPt=$anyPointingInWindow " +
-                "ptConf=$bestPointConf npConf=$bestNonPointConf state=$currentPointingState")
+                "ptConf=$bestPointConf state=$currentPointingState")
 
         return isPointing
     }
@@ -230,8 +213,7 @@ class InferenceViewModel(application: Application) : AndroidViewModel(applicatio
     override fun onCleared() {
         super.onCleared()
         spatialNetModel?.close()
-        yoloModel?.close()
         spatialNetModel = null
-        yoloModel = null
+        _result.value = CombinedResult()
     }
 }

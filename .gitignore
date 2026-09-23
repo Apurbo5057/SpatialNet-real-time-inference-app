@@ -1,5 +1,11 @@
 *.iml
 .gradle
+.kotlin
+.galaxy
+hs_err_pid*.log
+replay_pid*.log
+/.idea/deploymentTargetSelector.xml
+/.idea/vcs.xml
 /local.properties
 /.idea/caches
 /.idea/libraries

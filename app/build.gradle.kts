@@ -15,8 +15,25 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    flavorDimensions += "model"
+    productFlavors {
+        create("fp32") {
+            dimension = "model"
+            versionNameSuffix = "-fp32"
+            buildConfigField("String", "MODEL_ASSET", "\"spatialnet_v4.onnx\"")
+            manifestPlaceholders["appLabel"] = "ROI Detection FP32"
+        }
+        create("fromFp16") {
+            dimension = "model"
+            applicationIdSuffix = ".fromfp16"
+            versionNameSuffix = "-from-fp16"
+            buildConfigField("String", "MODEL_ASSET", "\"spatialnet_fastest_from_fp16.onnx\"")
+            manifestPlaceholders["appLabel"] = "ROI Detection FP16 Source"
+        }
+    }
+    sourceSets.getByName("fp32").assets.srcDir(layout.buildDirectory.dir("generated/modelAssets/fp32"))
+    sourceSets.getByName("fromFp16").assets.srcDir(layout.buildDirectory.dir("generated/modelAssets/fromFp16"))
 
     buildTypes {
         release {
@@ -36,11 +53,25 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     androidResources {
         noCompress += "onnx"
     }
 }
+
+val prepareFp32ModelAsset by tasks.registering(Sync::class) {
+    from("../ROIModel/spatialnet_v4.onnx")
+    into(layout.buildDirectory.dir("generated/modelAssets/fp32"))
+}
+val prepareFromFp16ModelAsset by tasks.registering(Sync::class) {
+    from("../ROIModel/spatialnet_fastest_from_fp16.onnx")
+    into(layout.buildDirectory.dir("generated/modelAssets/fromFp16"))
+}
+tasks.matching { it.name.startsWith("mergeFp32") && it.name.endsWith("Assets") }
+    .configureEach { dependsOn(prepareFp32ModelAsset) }
+tasks.matching { it.name.startsWith("mergeFromFp16") && it.name.endsWith("Assets") }
+    .configureEach { dependsOn(prepareFromFp16ModelAsset) }
 
 dependencies {
 
@@ -65,11 +96,5 @@ dependencies {
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }

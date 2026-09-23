@@ -1,0 +1,11 @@
+*.onnx binary
+*.onnx.data binary
+*.tflite binary
+*.pth binary
+*.npy binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.apk binary
+*.zip binary
