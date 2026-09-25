@@ -23,6 +23,8 @@ import com.example.roidetection.ModelInfo
 fun ModelBadge(
     info: ModelInfo?,
     modifier: Modifier = Modifier,
+    unavailableName: String = "model unavailable",
+    unavailableDetail: String = "asset missing from APK",
     containerColor: Color = Color.Black.copy(alpha = 0.7f),
     nameColor: Color = Color(0xFF7CE38B),
     detailColor: Color = Color.White.copy(alpha = 0.75f)
@@ -34,13 +36,13 @@ fun ModelBadge(
     ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)) {
             Text(
-                text = info?.name ?: "model unavailable",
+                text = info?.name ?: unavailableName,
                 color = nameColor,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = info?.detail ?: "asset missing from APK",
+                text = info?.detail ?: unavailableDetail,
                 color = detailColor,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Medium

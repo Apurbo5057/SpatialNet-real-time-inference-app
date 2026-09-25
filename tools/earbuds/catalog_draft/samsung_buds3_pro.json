@@ -1,0 +1,203 @@
+{
+  "id": "samsung_buds3_pro",
+  "brand": "Samsung",
+  "model": "Galaxy Buds3 Pro",
+  "releaseYear": 2024,
+  "specs": {
+    "batteryEarbudHours": "Up to 7 h (ANC off) / up to 6 h (ANC on)",
+    "batteryWithCaseHours": "Up to 30 h (ANC off) / up to 26 h (ANC on)",
+    "anc": true,
+    "bluetoothVersion": "5.4",
+    "codecs": [
+      "SBC",
+      "AAC",
+      "SSC (Samsung Scalable Codec)",
+      "SSC UHQ / Samsung Seamless Codec (24-bit/96 kHz)"
+    ],
+    "waterResistance": "IP57",
+    "earbudWeightGrams": 5.4,
+    "chargingPort": "USB-C",
+    "wirelessCharging": true,
+    "otherFeatures": [
+      "Adaptive Noise Control (ANC) with Galaxy AI",
+      "2-way speaker: planar tweeter + dynamic driver, dual amplifier",
+      "Blade Lights on the stems",
+      "Pinch and swipe gesture controls on the stem",
+      "Adaptive EQ, Voice Detect, Siren Detect",
+      "360 Audio",
+      "Auracast / LE Audio support",
+      "Auto Switch between Galaxy devices",
+      "Samsung Find",
+      "Real-time Interpreter (Galaxy AI)",
+      "Case weight 46.5 g",
+      "Battery 53 mAh per earbud, 515 mAh case",
+      "Colours: Silver, White"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "Galaxy Buds3 Pro (XXXX)"
+    ],
+    "namePatterns": [
+      "^Galaxy Buds3 Pro.*",
+      "(?i).*Buds3 Pro.*"
+    ],
+    "supportsGoogleFastPair": null,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": 117,
+    "notes": "Exact default name NOT confirmed from an official source. Samsung's manual and support pages only say to select the earbuds in the Bluetooth list; SoundGuys calls them 'Samsung Galaxy Buds3 Pro'. The open-source GalaxyBudsClient identifies this model by the substring 'Buds3 Pro' in the device name (and notes Buds2+ can be renamed, so it prefers the Samsung SPP service UUID d908aab5-7a90-4cbe-8641-86a553db... for model detection). Previous Galaxy Buds used 'Galaxy Buds<model> (XXXX)' with a 4-hex-digit suffix; assumed here, verify on device. Match 'Buds3 Pro' BEFORE plain 'Buds3' to avoid confusing it with the Galaxy Buds3. 0x0075 is Samsung Electronics' Bluetooth SIG company ID (assigned-numbers list); that the Buds3 Pro advertise with it is not verified. Pairing mode: case battery LED flashes red, green and blue; blade lights may flash. Pairing mode times out after 3 minutes. Google Fast Pair support not confirmed (Samsung phones use their own pop-up; non-Samsung Android uses the Galaxy Wearable app).",
+    "verifiedOnDevice": false
+  },
+  "pairingSteps": [
+    "On the Android phone, turn on Bluetooth and install the Galaxy Wearable app from Google Play (recommended for non-Samsung phones).",
+    "Put both earbuds into their correct slots in the charging case.",
+    "Close the case and open it again. The earbuds go into pairing mode. If they don't, keep the case open and press and hold the Connect button on the bottom of the case for more than 3 seconds, until the case light flashes red, green and blue.",
+    "On a Samsung phone, tap Connect on the pop-up. On other Android phones, open Galaxy Wearable and follow the on-screen steps, or on Android 16 or later select the earbuds in Settings > Bluetooth.",
+    "If the phone doesn't connect within 3 minutes, pairing mode turns off. Close and reopen the case to start again."
+  ],
+  "sources": {
+    "specs": [
+      "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds3-pro-silver-sm-r630nzaaeua/",
+      "https://www.soundguys.com/samsung-galaxy-buds3-pro-review-119540/",
+      "https://www.gsmarena.com/samsung_galaxy_buds3_and_buds3_pro_launch_with_blades_improved_audio_and_battery_life-news-63657.php",
+      "https://www.gsmarena.com/samsung_galaxy_buds3_pro_review-news-64005.php"
+    ],
+    "pairing": [
+      "https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_UK&OriginYN=N&ModelType=N&ModelName=SM-R630&CttFileID=10656795&CDCttType=UM&VPath=UM%2F202507%2F20250715141035883%2FSM-R530_R630_UG_EU_Eng_Rev.1.4_250625.pdf",
+      "https://www.samsung.com/us/support/answer/ANS10001319/"
+    ],
+    "bluetoothName": [
+      "https://www.soundguys.com/how-to-pair-samsung-galaxy-buds3-pro-to-any-device-122305/",
+      "https://github.com/timschneeb/GalaxyBudsClient/blob/master/GalaxyBudsClient/Model/Specifications/Buds3ProDeviceSpec.cs",
+      "https://github.com/timschneeb/GalaxyBudsClient/blob/master/GalaxyBudsClient/Model/Specifications/DeviceSpecHelper.cs",
+      "https://bitbucket.org/bluetooth-SIG/public/raw/main/assigned_numbers/company_identifiers/company_identifiers.yaml"
+    ]
+  },
+  "images": [
+    {
+      "file": "samsung_buds3_pro_01.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_review-news-64005.php",
+      "view": "white, case open with buds inside, close-up on blue wooden table"
+    },
+    {
+      "file": "samsung_buds3_pro_02.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_in_for_review-news-63711.php",
+      "view": "white, closed case lying on its back, buds visible through the clear lid, on blue table"
+    },
+    {
+      "file": "samsung_buds3_pro_03.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_in_for_review-news-63711.php",
+      "view": "white, buds alone in front of closed case, ear tips visible, on table"
+    },
+    {
+      "file": "samsung_buds3_pro_04.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_in_for_review-news-63711.php",
+      "view": "white, two buds lying on table showing blade stem and tip, case behind"
+    },
+    {
+      "file": "samsung_buds3_pro_05.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_review-news-64005.php",
+      "view": "white, buds alone close-up with blade stems, on white surface"
+    },
+    {
+      "file": "samsung_buds3_pro_06.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_review-news-64005.php",
+      "view": "white, open case with buds held in a hand, person in background"
+    },
+    {
+      "file": "samsung_buds3_pro_07.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_review-news-64005.php",
+      "view": "white, unboxing: case, box, USB-C cable and spare ear tips on blue table"
+    },
+    {
+      "file": "samsung_buds3_pro_08.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_review-news-64005.php",
+      "view": "white, bud worn in ear, side view of face"
+    },
+    {
+      "file": "samsung_buds3_pro_09.jpg",
+      "source": "https://www.gsmarena.com/samsung_galaxy_buds3_pro_review-news-64005.php",
+      "view": "white, hand inserting bud into ear, close-up"
+    },
+    {
+      "file": "samsung_buds3_pro_10.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds3-pro-review-119540/",
+      "view": "silver, case open with buds inside, top-front view on blue patterned mat"
+    },
+    {
+      "file": "samsung_buds3_pro_11.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds3-pro-review-119540/",
+      "view": "silver, two buds in open palm"
+    },
+    {
+      "file": "samsung_buds3_pro_12.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds3-pro-review-119540/",
+      "view": "silver, open case on desk next to Galaxy Z Flip6, dim lighting"
+    },
+    {
+      "file": "samsung_buds3_pro_13.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds3-pro-review-119540/",
+      "view": "silver, buds alone lying on carbon-fibre surface, nozzle and ear tip visible"
+    },
+    {
+      "file": "samsung_buds3_pro_14.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds3-pro-review-119540/",
+      "view": "silver, case bottom/back with USB-C port and pairing button"
+    },
+    {
+      "file": "samsung_buds3_pro_15.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds3-pro-review-119540/",
+      "view": "silver, case open with buds inside, angled view, dark background"
+    },
+    {
+      "file": "samsung_buds3_pro_16.jpg",
+      "source": "https://www.soundguys.com/i-dont-care-that-the-galaxy-buds3-pro-look-like-airpods-119445/",
+      "view": "silver, open case held in hand, dark background"
+    },
+    {
+      "file": "samsung_buds3_pro_17.jpg",
+      "source": "https://www.soundguys.com/i-dont-care-that-the-galaxy-buds3-pro-look-like-airpods-119445/",
+      "view": "silver, single bud pinched between fingers showing blade stem"
+    },
+    {
+      "file": "samsung_buds3_pro_18.jpg",
+      "source": "https://www.soundguys.com/i-dont-care-that-the-galaxy-buds3-pro-look-like-airpods-119445/",
+      "view": "silver, bud worn in ear with blade light, side profile, dark room"
+    },
+    {
+      "file": "samsung_buds3_pro_19.jpg",
+      "source": "https://www.androidauthority.com/samsung-galaxy-buds-3-pro-revisit-3500659/",
+      "view": "silver, open case with buds held in hand by a window"
+    },
+    {
+      "file": "samsung_buds3_pro_20.jpg",
+      "source": "https://www.androidauthority.com/samsung-galaxy-buds-3-pro-revisit-3500659/",
+      "view": "silver, closed case with one bud leaning on it, on window sill, USB-C port visible"
+    },
+    {
+      "file": "samsung_buds3_pro_21.jpg",
+      "source": "https://www.rtings.com/headphones/reviews/samsung/galaxy-buds3-pro-truly-wireless",
+      "view": "silver, closed case with label sticker and both buds on glass shelf (review lab photo)"
+    },
+    {
+      "file": "samsung_buds3_pro_22.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds3-pro-silver-sm-r630nzaaeua/",
+      "view": "silver, official product shot, case open with buds inside, front view, white background"
+    },
+    {
+      "file": "samsung_buds3_pro_23.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds3-pro-silver-sm-r630nzaaeua/",
+      "view": "silver, official product shot, case closed, front view, white background"
+    },
+    {
+      "file": "samsung_buds3_pro_24.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds3-pro-silver-sm-r630nzaaeua/",
+      "view": "silver, official product shot, both buds front view with blade lights on, white background"
+    },
+    {
+      "file": "samsung_buds3_pro_25.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds3-pro-silver-sm-r630nzaaeua/",
+      "view": "silver, official product shot, both buds rear view showing ear tips and L/R marks, white background"
+    }
+  ]
+}

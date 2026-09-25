@@ -1,0 +1,196 @@
+{
+  "id": "qcy_t13",
+  "brand": "QCY",
+  "model": "T13",
+  "releaseYear": 2021,
+  "specs": {
+    "batteryEarbudHours": "8",
+    "batteryWithCaseHours": "40",
+    "anc": false,
+    "bluetoothVersion": "5.1",
+    "codecs": [
+      "SBC",
+      "AAC"
+    ],
+    "waterResistance": "IPX5",
+    "earbudWeightGrams": null,
+    "chargingPort": "USB-C",
+    "wirelessCharging": null,
+    "otherFeatures": [
+      "ENC noise reduction for calls only (4 mics)",
+      "7.2 mm dynamic driver",
+      "380 mAh case battery",
+      "Fast charge: 5 min for about 1 h playback",
+      "About 1.5 h charging time",
+      "Touch controls",
+      "QCY app (EQ, custom controls, sleep mode, OTA updates)",
+      "Low-latency mode (US QCY listing)",
+      "Pop-up connection window through the QCY app",
+      "Colours: Black, White",
+      "Earbud 15.7x32.3x15.0 mm; case 54.0x53.6x28.2 mm"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "QCY-T13"
+    ],
+    "namePatterns": [
+      "^QCY[- ]T13$"
+    ],
+    "supportsGoogleFastPair": null,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": null,
+    "notes": "Two unofficial manual transcriptions (thephonetalks.com, teamplush.by) give the name \"QCY-T13\". The official QCY page does not print the name. The pattern allows a space instead of the hyphen, and its end anchor rejects 'QCY-T13 ANC' and 'T13X'. QCY's pop-up connection runs through the QCY app. No evidence of Google Fast Pair was found. PIN, if asked: 0000. Variants: QCY sells a separate 'T13 ANC' (Bluetooth 5.3, ANC, different case) and a 'T13 X'. Their names and specs differ, and they are NOT covered here. The current US QCY listing says 'Bluetooth 5.3' for the plain T13, which may be a later hardware revision; qcy.com says V5.1. Some Amazon listings mention a wireless-charging case; the official page does not, so wirelessCharging is null.",
+    "verifiedOnDevice": false
+  },
+  "pairingSteps": [
+    "Turn on Bluetooth on the Android phone. Optionally, open the QCY app.",
+    "Open the charging case and take out both earbuds. They power on, connect to each other and enter pairing mode (the LED flashes).",
+    "If the QCY app pop-up appears, tap it to connect. Otherwise open Bluetooth settings and select \"QCY-T13\".",
+    "If a PIN is requested, enter 0000.",
+    "If the earbuds do not show up: put both earbuds back in the case, hold the case button for about 10 seconds until the LEDs flash red and blue 3 times (factory reset), then take them out and pair again."
+  ],
+  "sources": {
+    "specs": [
+      "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "https://www.usqcy.com/products/qcy-t13-true-wireless-earbuds",
+      "https://www.scarbir.com/tws/qcy-t13-review"
+    ],
+    "pairing": [
+      "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "https://www.thephonetalks.com/qcy-t13-manual/",
+      "https://teamplush.by/en/product/qcy-t13/"
+    ],
+    "bluetoothName": [
+      "https://www.thephonetalks.com/qcy-t13-manual/",
+      "https://teamplush.by/en/product/qcy-t13/"
+    ]
+  },
+  "images": [
+    {
+      "file": "qcy_t13_01.jpg",
+      "source": "https://www.scarbir.com/tws/qcy-t13-review",
+      "view": "real-life photo: white, case closed with buds beside it on outdoor wooden railing"
+    },
+    {
+      "file": "qcy_t13_02.jpg",
+      "source": "https://www.scarbir.com/tws/qcy-t13-review",
+      "view": "real-life photo: white, case open with one bud inside and one outside, on outdoor wooden railing"
+    },
+    {
+      "file": "qcy_t13_03.jpg",
+      "source": "https://www.scarbir.com/tws/qcy-t13-review",
+      "view": "real-life photo: white, single bud worn in ear, side profile, outdoors"
+    },
+    {
+      "file": "qcy_t13_04.jpg",
+      "source": "https://r-reviews.com/2022/02/16/qcy-t13-earphones-review/",
+      "view": "real-life photo: white, case open with both buds inside, on a desk"
+    },
+    {
+      "file": "qcy_t13_05.jpg",
+      "source": "https://r-reviews.com/2022/02/16/qcy-t13-earphones-review/",
+      "view": "real-life photo: white, bud worn in ear, side profile, indoors"
+    },
+    {
+      "file": "qcy_t13_06.jpg",
+      "source": "https://r-reviews.com/2022/02/16/qcy-t13-earphones-review/",
+      "view": "real-life photo: white, both buds in an open palm"
+    },
+    {
+      "file": "qcy_t13_07.jpg",
+      "source": "https://wonderfullytech.com/qcy-t13-review-an-definite-upgrade-to-the-qcy-t12/",
+      "view": "real-life photo: white, case closed front with buds on wooden planks"
+    },
+    {
+      "file": "qcy_t13_08.jpg",
+      "source": "https://wonderfullytech.com/qcy-t13-review-an-definite-upgrade-to-the-qcy-t12/",
+      "view": "real-life photo: white, buds close-up on wood, one showing nozzle and charging pins"
+    },
+    {
+      "file": "qcy_t13_09.jpg",
+      "source": "https://wonderfullytech.com/qcy-t13-review-an-definite-upgrade-to-the-qcy-t12/",
+      "view": "real-life photo: white, case closed side view with buds on wood"
+    },
+    {
+      "file": "qcy_t13_10.jpg",
+      "source": "https://www.soundphilereview.com/reviews/qcy-t13-review-14892/",
+      "view": "real-life photo: black, buds in front of closed case on patterned tablecloth"
+    },
+    {
+      "file": "qcy_t13_11.jpg",
+      "source": "https://www.soundphilereview.com/reviews/qcy-t13-review-14892/",
+      "view": "real-life photo: black, pair of buds close-up on patterned cloth"
+    },
+    {
+      "file": "qcy_t13_12.jpg",
+      "source": "https://www.soundphilereview.com/reviews/qcy-t13-review-14892/",
+      "view": "real-life photo: black, single bud side view, shallow depth of field"
+    },
+    {
+      "file": "qcy_t13_13.jpg",
+      "source": "https://www.soundphilereview.com/reviews/qcy-t13-review-14892/",
+      "view": "real-life photo: black, single bud nozzle up, charging contacts on stem visible"
+    },
+    {
+      "file": "qcy_t13_14.jpg",
+      "source": "https://www.soundphilereview.com/reviews/qcy-t13-review-14892/",
+      "view": "real-life photo: black, closed glossy case with QCY logo close-up"
+    },
+    {
+      "file": "qcy_t13_15.jpg",
+      "source": "https://www.izreview.com/qcy-t13-review/",
+      "view": "real-life photo: black, case open top-down with buds inside (red charging LEDs)"
+    },
+    {
+      "file": "qcy_t13_16.jpg",
+      "source": "https://www.izreview.com/qcy-t13-review/",
+      "view": "real-life photo: black, closed case held in palm"
+    },
+    {
+      "file": "qcy_t13_17.jpg",
+      "source": "https://www.izreview.com/qcy-t13-review/",
+      "view": "real-life photo: black, buds on table in front of open case"
+    },
+    {
+      "file": "qcy_t13_18.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: black, case open with buds floating above, white background"
+    },
+    {
+      "file": "qcy_t13_19.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: black, buds floating above closed case with logo, white background"
+    },
+    {
+      "file": "qcy_t13_20.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: black, case open with buds seated, front view, white background"
+    },
+    {
+      "file": "qcy_t13_21.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: black, case open with one bud inside and one outside, angled, white background"
+    },
+    {
+      "file": "qcy_t13_22.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: black, buds alone close-up showing LED and charging pins, white background"
+    },
+    {
+      "file": "qcy_t13_23.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: white, case open with buds floating above, white background"
+    },
+    {
+      "file": "qcy_t13_24.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: white, case open with buds seated, front view, white background"
+    },
+    {
+      "file": "qcy_t13_25.jpg",
+      "source": "https://www.qcy.com/products/qcy-t13-wireless-earphones",
+      "view": "product shot: white, case open with one bud out, angled top view, white background"
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "id": "xiaomi_redmi_buds_5",
+  "brand": "Xiaomi",
+  "model": "Redmi Buds 5",
+  "releaseYear": 2023,
+  "specs": {
+    "batteryEarbudHours": "up to 10 (ANC off)",
+    "batteryWithCaseHours": "up to 40 (ANC off)",
+    "anc": true,
+    "bluetoothVersion": "5.3",
+    "codecs": [
+      "SBC",
+      "AAC"
+    ],
+    "waterResistance": "IP54 (earbuds only; case not water resistant)",
+    "earbudWeightGrams": 5.3,
+    "chargingPort": "USB-C",
+    "wirelessCharging": false,
+    "otherFeatures": [
+      "Model number M2316E1",
+      "Up to 46dB hybrid ANC with 3 ANC levels (deep/balanced/light)",
+      "3 transparency modes",
+      "12.4mm titanium-plated dynamic driver",
+      "2-mic AI call noise cancellation",
+      "Dual-device connection (off by default, enable in Xiaomi Earbuds app)",
+      "Google Fast Pair",
+      "Touch controls on stem",
+      "5-minute charge gives ~2 hours playback",
+      "Colours: Black, White, Sky Blue",
+      "Case 61 x 50 x 24.6 mm, 31.4 g; earbud 54 mAh, case 480 mAh"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "Redmi Buds 5"
+    ],
+    "namePatterns": [
+      "(?i)^redmi buds 5$"
+    ],
+    "supportsGoogleFastPair": true,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": null,
+    "notes": "Xiaomi's official FAQ writes the name as \"REDMI Buds 5\" (newer brand styling); the printed manual illustration and reviews show \"Redmi Buds 5\", so match case-insensitively. Must NOT match \"Redmi Buds 5 Pro\" / \"Redmi Buds 5A\" / \"Redmi Buds 5C\" (the anchored regex excludes them). Pairing PIN if asked: 0000. Fast Pair pop-up appears on Android when the lid is opened near the phone; Fast Pair is disabled for 5 minutes after being dismissed 3 times. Fast Pair model ID and BLE manufacturer data not published.",
+    "verifiedOnDevice": false
+  },
+  "pairingSteps": [
+    "Put both earbuds in the charging case and close the lid.",
+    "Open the lid near the phone. On first use (or after unpairing) the case's white light blinks for about 1 minute and the earbuds wait for a connection; on Android a Google Fast Pair pop-up may appear - tap Connect.",
+    "If the light is not blinking, keep the lid open and press and hold the function button on the back of the case for about 2 seconds until the white light blinks.",
+    "On the phone open Settings > Bluetooth, turn it on, and tap \"Redmi Buds 5\" in the list. Enter 0000 if a PIN is requested.",
+    "To reset: with the earbuds in the case and the lid open, press and hold the case button for about 10 seconds until the light flashes; then pair again."
+  ],
+  "sources": {
+    "specs": [
+      "https://www.mi.com/global/product/redmi-buds-5/",
+      "https://www.mi.com/global/product/redmi-buds-5/specs/",
+      "https://www.mi.com/global/support/faq/details/KA-47605/",
+      "https://www.gizmochina.com/2023/09/21/redmi-buds-5-launched/"
+    ],
+    "pairing": [
+      "https://www.mi.com/global/support/faq/details/KA-47605/",
+      "https://www.mi.com/global/support/faq/details/KA-113757/",
+      "https://www.manua.ls/xiaomi/redmi-buds-5/manual",
+      "https://www.thephonetalks.com/redmi-buds-5-manual/"
+    ],
+    "bluetoothName": [
+      "https://www.mi.com/global/support/faq/details/KA-47605/",
+      "https://www.mi.com/global/support/faq/details/KA-113757/",
+      "https://www.manua.ls/xiaomi/redmi-buds-5/manual"
+    ]
+  },
+  "images": [
+    {
+      "file": "xiaomi_redmi_buds_5_01.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "case open with sky blue buds inside, in front of retail box, on table"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_02.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "case closed, sky blue, front with Redmi logo, in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_03.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "case edge with USB-C port and LED, sky blue, in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_04.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "case back edge with function (pairing) button, sky blue, in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_05.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "case open, sky blue buds inside, top-down, in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_06.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "both sky blue buds held in fingers, inner side with sensors"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_07.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "sky blue buds close-up showing ear tips and stems, in fingers"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_08.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "sky blue buds, outer stem side with glossy strip, in fingers"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_09.jpg",
+      "source": "https://www.fonearena.com/blog/420479/redmi-buds-5-review-a-solid-affordable-anc-earbuds.html",
+      "view": "sky blue bud worn in ear, side profile of person"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_10.jpg",
+      "source": "https://www.geekman.in/redmi-buds-5-review/",
+      "view": "case open, black buds inside, on open palm"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_11.jpg",
+      "source": "https://www.geekman.in/redmi-buds-5-review/",
+      "view": "two black buds on open palm"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_12.jpg",
+      "source": "https://www.geekman.in/redmi-buds-5-review/",
+      "view": "case closed, black, Redmi logo, on palm"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_13.jpg",
+      "source": "https://www.geekman.in/redmi-buds-5-review/",
+      "view": "case open, black buds inside, close-up in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_14.jpg",
+      "source": "https://www.geekman.in/redmi-buds-5-review/",
+      "view": "case closed, black, bottom side with regulatory label, in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_15.jpg",
+      "source": "https://www.geekman.in/redmi-buds-5-review/",
+      "view": "case closed, black, edge with USB-C port, in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_16.jpg",
+      "source": "https://earbudsarena.com/xiaomi-redmi-buds-5-review/",
+      "view": "case open, sky blue buds inside, on wooden table"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_17.jpg",
+      "source": "https://earbudsarena.com/xiaomi-redmi-buds-5-review/",
+      "view": "single sky blue bud lying on wooden table"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_18.jpg",
+      "source": "https://earbudsarena.com/xiaomi-redmi-buds-5-review/",
+      "view": "case closed plus both buds, light colour, on wooden table"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_19.jpg",
+      "source": "https://www.mi.com/global/product/redmi-buds-5/",
+      "view": "official product shot: white, sky blue and black cases with buds, white background"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_20.jpg",
+      "source": "https://www.mi.com/global/product/redmi-buds-5/",
+      "view": "official lifestyle photo: white bud worn in ear"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_21.jpg",
+      "source": "https://www.mi.com/global/product/redmi-buds-5/",
+      "view": "official product render: single white bud, white background"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_22.jpg",
+      "source": "https://mytour.vn/en/blog/bai-viet/unboxing-and-hands-on-with-redmi-buds-5-sleek-design-great-sound-quality-up-to-10-hours-battery-life.html",
+      "view": "case open, black buds inside, in hand next to phone pairing screen, wooden table"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_23.jpg",
+      "source": "https://mytour.vn/en/blog/bai-viet/unboxing-and-hands-on-with-redmi-buds-5-sleek-design-great-sound-quality-up-to-10-hours-battery-life.html",
+      "view": "case open, sky blue buds inside, held up in hand, outdoor bokeh background"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_24.jpg",
+      "source": "https://mytour.vn/en/blog/bai-viet/unboxing-and-hands-on-with-redmi-buds-5-sleek-design-great-sound-quality-up-to-10-hours-battery-life.html",
+      "view": "black bud worn in ear, side close-up"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_25.jpg",
+      "source": "https://mytour.vn/en/blog/bai-viet/unboxing-and-hands-on-with-redmi-buds-5-sleek-design-great-sound-quality-up-to-10-hours-battery-life.html",
+      "view": "case closed, sky blue, front with Redmi logo, in hand"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_26.jpg",
+      "source": "https://mytour.vn/en/blog/bai-viet/unboxing-and-hands-on-with-redmi-buds-5-sleek-design-great-sound-quality-up-to-10-hours-battery-life.html",
+      "view": "sky blue case open, white case closed and black case, side by side on wooden table"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_27.jpg",
+      "source": "https://mytour.vn/en/blog/bai-viet/unboxing-and-hands-on-with-redmi-buds-5-sleek-design-great-sound-quality-up-to-10-hours-battery-life.html",
+      "view": "case open, sky blue buds inside, with ear tips and cable, black case behind, on wooden table"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_28.jpg",
+      "source": "https://www.deccanherald.com/technology/gadgets/redmi-buds-5-review-decent-budget-earphones-2900891",
+      "view": "case open, white buds inside, on palm, outdoor daylight"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_29.jpg",
+      "source": "https://www.deccanherald.com/technology/gadgets/redmi-buds-5-review-decent-budget-earphones-2900891",
+      "view": "case open, white buds inside, in hand against blue background"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_30.jpg",
+      "source": "https://www.deccanherald.com/technology/gadgets/redmi-buds-5-review-decent-budget-earphones-2900891",
+      "view": "case closed, white, front with Redmi logo, in hand outdoors"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_31.jpg",
+      "source": "https://www.deccanherald.com/technology/gadgets/redmi-buds-5-review-decent-budget-earphones-2900891",
+      "view": "single white bud held in fingers next to white case with Redmi logo, flowers behind"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_32.jpg",
+      "source": "https://techno-senior.com/2024/02/17/test-xiaomi-redmi-buds-5/",
+      "view": "single black bud with ear tip, on palm close-up"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_33.jpg",
+      "source": "https://techno-senior.com/2024/02/17/test-xiaomi-redmi-buds-5/",
+      "view": "black bud worn in ear, front-side close-up"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_34.jpg",
+      "source": "https://techno-senior.com/2024/02/17/test-xiaomi-redmi-buds-5/",
+      "view": "black bud worn in ear, rear view showing stem"
+    },
+    {
+      "file": "xiaomi_redmi_buds_5_35.jpg",
+      "source": "https://techno-senior.com/2024/02/17/test-xiaomi-redmi-buds-5/",
+      "view": "case open, black buds inside, angled close-up on retail box"
+    }
+  ]
+}

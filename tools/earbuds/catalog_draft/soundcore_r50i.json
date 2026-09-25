@@ -1,0 +1,223 @@
+{
+  "id": "soundcore_r50i",
+  "brand": "Anker Soundcore",
+  "model": "Soundcore R50i",
+  "releaseYear": 2023,
+  "specs": {
+    "batteryEarbudHours": "Up to 10",
+    "batteryWithCaseHours": "Up to 30",
+    "anc": false,
+    "bluetoothVersion": "5.3",
+    "codecs": null,
+    "waterResistance": "IPX5",
+    "earbudWeightGrams": null,
+    "chargingPort": "USB-C",
+    "wirelessCharging": false,
+    "otherFeatures": [
+      "10mm dynamic drivers (BassUp)",
+      "2 mics with AI-enhanced calls",
+      "22 preset EQs + custom EQ in soundcore app",
+      "Fast charge: 10 min = 2 h playback",
+      "Charging case with attached lanyard",
+      "Gaming mode (app)",
+      "Find Device (app)",
+      "Customizable touch controls",
+      "Mono (single-earbud) mode",
+      "Battery: 60 mAh x2 earbuds, 430 mAh case",
+      "Model number A3949 (shared hardware with soundcore P20i / P25i)"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "soundcore R50i"
+    ],
+    "namePatterns": [
+      "(?i)^soundcore R50i(?! NC).*"
+    ],
+    "supportsGoogleFastPair": null,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": null,
+    "notes": "Official A3949 manual pairing illustration shows 'soundcore R50i'; its text says to select 'soundcore R50i / P20i / P25i' and that the name may vary by region (same hardware is sold as soundcore P20i / P25i and would then advertise that name). Pattern excludes 'soundcore R50i NC' (model A3959, a different product with ANC and a kickstand case). Google Fast Pair support not confirmed by any official source.",
+    "verifiedOnDevice": false
+  },
+  "pairingSteps": [
+    "Charge the earbuds and case fully before first use (remove the insulation stickers on the earbuds).",
+    "Open the charging case and take both earbuds out; they power on and enter Bluetooth pairing mode automatically.",
+    "On the Android phone open Settings > Bluetooth and select 'soundcore R50i' (name may vary by region).",
+    "To enter pairing mode manually: with the earbuds out of the case, tap and hold the touchpads on both earbuds for 3 seconds.",
+    "If pairing fails: delete the earbuds from the phone's Bluetooth list, take them out of the case and, within 1 minute of power-on, tap and hold both touchpads for 10 seconds until a sound plays (reset), then pair again."
+  ],
+  "sources": {
+    "specs": [
+      "https://salesforce-knowledge-download.s3.us-west-2.amazonaws.com/000018509/en_US/000018509.pdf",
+      "https://service.soundcore.com/article-description/soundcore-P20i-R50i-P25i-User-Guide-A3949",
+      "https://www.gadgetbytenepal.com/anker-soundcore-r50i-review/",
+      "https://stuff.co.za/2024/04/25/soundcore-r50i-review-bass-budget/"
+    ],
+    "pairing": [
+      "https://salesforce-knowledge-download.s3.us-west-2.amazonaws.com/000018509/en_US/000018509.pdf",
+      "https://service.soundcore.com/article-description/soundcore-P20i-R50i-P25i-User-Guide-A3949"
+    ],
+    "bluetoothName": [
+      "https://salesforce-knowledge-download.s3.us-west-2.amazonaws.com/000018509/en_US/000018509.pdf",
+      "https://service.soundcore.com/article-description/soundcore-P20i-R50i-P25i-User-Guide-A3949"
+    ]
+  },
+  "images": [
+    {
+      "file": "soundcore_r50i_01.jpg",
+      "source": "https://padhkedekho.com/soundcore-r50i-review-this-is-good-but-goat-find-here/",
+      "view": "real-life: white case closed with both white buds lying beside it, lanyard, on desk in front of RGB keyboard"
+    },
+    {
+      "file": "soundcore_r50i_02.jpg",
+      "source": "https://padhkedekho.com/soundcore-r50i-review-this-is-good-but-goat-find-here/",
+      "view": "real-life: white case closed held in hand, lanyard, keyboard background"
+    },
+    {
+      "file": "soundcore_r50i_03.jpg",
+      "source": "https://padhkedekho.com/soundcore-r50i-review-this-is-good-but-goat-find-here/",
+      "view": "real-life: single white earbud held between fingers, side view of stem"
+    },
+    {
+      "file": "soundcore_r50i_04.jpg",
+      "source": "https://padhkedekho.com/soundcore-r50i-review-this-is-good-but-goat-find-here/",
+      "view": "real-life: white case closed on desk charging via USB-C cable, LED on"
+    },
+    {
+      "file": "soundcore_r50i_05.jpg",
+      "source": "https://stuff.co.za/2024/04/25/soundcore-r50i-review-bass-budget/",
+      "view": "real-life: black case open with buds inside next to retail box, light blue table"
+    },
+    {
+      "file": "soundcore_r50i_06.jpg",
+      "source": "https://stuff.co.za/2024/04/25/soundcore-r50i-review-bass-budget/",
+      "view": "real-life: black case open with buds inside, retail box and USB-C cable, top-down angle"
+    },
+    {
+      "file": "soundcore_r50i_07.jpg",
+      "source": "https://stuff.co.za/2024/04/25/soundcore-r50i-review-bass-budget/",
+      "view": "real-life: single black earbud held in hand, box and case blurred behind"
+    },
+    {
+      "file": "soundcore_r50i_08.jpg",
+      "source": "https://www.gadgetbytenepal.com/anker-soundcore-r50i-review/",
+      "view": "real-life: black case open with bud inside and one bud outside on pink wooden slats"
+    },
+    {
+      "file": "soundcore_r50i_09.jpg",
+      "source": "https://www.gadgetbytenepal.com/anker-soundcore-r50i-review/",
+      "view": "real-life: black case closed with lanyard, charging via USB-C, grey table"
+    },
+    {
+      "file": "soundcore_r50i_10.jpg",
+      "source": "https://foodworldme.wordpress.com/2024/03/14/r50i-true-wireless-earbuds-from-soundcore-by-anker/",
+      "view": "real-life: blue case open with both blue buds inside, held in hand"
+    },
+    {
+      "file": "soundcore_r50i_11.jpg",
+      "source": "https://foodworldme.wordpress.com/2024/03/14/r50i-true-wireless-earbuds-from-soundcore-by-anker/",
+      "view": "real-life: blue case in unboxing tray with lanyard, cable, ear tips and quick start guide"
+    },
+    {
+      "file": "soundcore_r50i_12.jpg",
+      "source": "https://www.amazon.eg/-/en/dp/B0C9MNT48D",
+      "view": "product shot: black case open with buds inside, lanyard, white background"
+    },
+    {
+      "file": "soundcore_r50i_13.jpg",
+      "source": "https://www.amazon.eg/-/en/dp/B0C9MNT48D",
+      "view": "product shot: black case closed with lanyard, two buds floating above, white background"
+    },
+    {
+      "file": "soundcore_r50i_14.jpg",
+      "source": "https://www.amazon.eg/-/en/dp/B0C9MNT48D",
+      "view": "marketing lifestyle: black case closed with lanyard and one bud on white desk (text overlay)"
+    },
+    {
+      "file": "soundcore_r50i_15.jpg",
+      "source": "https://www.amazon.eg/-/en/dp/B0C9MNT48D",
+      "view": "marketing: two black buds close-up on wet surface (text overlay)"
+    },
+    {
+      "file": "soundcore_r50i_16.jpg",
+      "source": "https://www.amazon.eg/-/en/dp/B0C9MNT48D",
+      "view": "marketing: black earbud worn in a man's ear"
+    },
+    {
+      "file": "soundcore_r50i_17.jpg",
+      "source": "https://elavocatomobile.net/anker-soundcore-r50i-comprehensive-review-and-full-specifications-of-the-best-airpods/",
+      "view": "product shot: black case closed, both buds, lanyard, cable and ear tips on black background"
+    },
+    {
+      "file": "soundcore_r50i_18.jpg",
+      "source": "https://hive.blog/hive-106817/@macchiata/anker-soundcore-r50i-best-budget-tws-review",
+      "view": "real-life: pink case open with one bud inside and one bud lying beside it, lanyard, white table"
+    },
+    {
+      "file": "soundcore_r50i_19.jpg",
+      "source": "https://hive.blog/hive-106817/@macchiata/anker-soundcore-r50i-best-budget-tws-review",
+      "view": "real-life: pink case open top-down with both pink buds inside, pink lanyard attached, white table"
+    },
+    {
+      "file": "soundcore_r50i_20.jpg",
+      "source": "https://hive.blog/hive-106817/@macchiata/anker-soundcore-r50i-best-budget-tws-review",
+      "view": "real-life: pink case open low side angle with bud resting on lid edge, white table"
+    },
+    {
+      "file": "soundcore_r50i_21.jpg",
+      "source": "https://hive.blog/hive-106817/@macchiata/anker-soundcore-r50i-best-budget-tws-review",
+      "view": "real-life: pink case open front view with both buds inside, lanyard, white table"
+    },
+    {
+      "file": "soundcore_r50i_22.jpg",
+      "source": "https://www.scarbir.com/tws/soundcore-p20i-review",
+      "view": "real-life: black case closed with both black buds beside it on stone wall outdoors, grass (sold as soundcore P20i (A3949), case and buds visibly identical to R50i)"
+    },
+    {
+      "file": "soundcore_r50i_23.jpg",
+      "source": "https://www.scarbir.com/tws/soundcore-p20i-review",
+      "view": "real-life: black case open with lanyard, both buds lying in front on stone wall outdoors (sold as soundcore P20i (A3949), case and buds visibly identical to R50i)"
+    },
+    {
+      "file": "soundcore_r50i_24.jpg",
+      "source": "https://www.techgearlab.com/reviews/audio/wireless-earbuds/soundcore-p20i",
+      "view": "real-life: pink case open with both buds inside held in hand, warm outdoor light (sold as soundcore P20i (A3949), case and buds visibly identical to R50i)"
+    },
+    {
+      "file": "soundcore_r50i_25.jpg",
+      "source": "https://www.techgearlab.com/reviews/audio/wireless-earbuds/soundcore-p20i",
+      "view": "real-life: pink case closed held in hands by lanyard, outdoor, person seated (sold as soundcore P20i (A3949), case and buds visibly identical to R50i)"
+    },
+    {
+      "file": "soundcore_r50i_26.jpg",
+      "source": "https://www.techgearlab.com/reviews/audio/wireless-earbuds/soundcore-p20i",
+      "view": "real-life: pink case open with lanyard, both pink buds and spare ear tips on wooden table (sold as soundcore P20i (A3949), case and buds visibly identical to R50i)"
+    },
+    {
+      "file": "soundcore_r50i_27.jpg",
+      "source": "https://technave.com/gadget/Soundcore-R50i-review-Upper-Entry-level-TWS-with-touch-controls-for-users-on-a-budget-35025.html",
+      "view": "real-life: white case open with both white buds inside, white lanyard, dark leather surface, greenery"
+    },
+    {
+      "file": "soundcore_r50i_28.jpg",
+      "source": "https://technave.com/gadget/Soundcore-R50i-review-Upper-Entry-level-TWS-with-touch-controls-for-users-on-a-budget-35025.html",
+      "view": "real-life: white case open empty with both white buds in front, lanyard, dark surface"
+    },
+    {
+      "file": "soundcore_r50i_29.jpg",
+      "source": "https://technave.com/gadget/Soundcore-R50i-review-Upper-Entry-level-TWS-with-touch-controls-for-users-on-a-budget-35025.html",
+      "view": "real-life: two white buds close-up (nozzles and charging contacts) in front of closed white case"
+    },
+    {
+      "file": "soundcore_r50i_30.jpg",
+      "source": "https://technave.com/gadget/Soundcore-R50i-review-Upper-Entry-level-TWS-with-touch-controls-for-users-on-a-budget-35025.html",
+      "view": "real-life: two white buds resting on top of closed white case, low angle, greenery background"
+    },
+    {
+      "file": "soundcore_r50i_31.jpg",
+      "source": "https://www.bestbuy.com/site/reviews/soundcore-by-anker-p25i-true-wireless-in-ear-headphones-blue/10938593",
+      "view": "product shot: blue case closed with blue woven lanyard, two blue buds floating above, white background (sold as soundcore P25i A3949, identical hardware)"
+    }
+  ]
+}

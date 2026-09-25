@@ -27,10 +27,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -64,24 +66,35 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import android.util.Log
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
+import androidx.compose.foundation.layout.navigationBarsPadding
+import com.example.roidetection.AppMode
 import com.example.roidetection.CombinedResult
 import com.example.roidetection.InferenceViewModel
 import com.example.roidetection.ModelInfo
+import com.example.roidetection.TeachState
+import com.example.roidetection.ui.theme.Beam
+import com.example.roidetection.ui.theme.Mist
 import java.util.concurrent.Executors
 import android.graphics.Bitmap
 import android.content.ContentValues
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.compose.material3.FloatingActionButton
 import kotlinx.coroutines.launch
 
 private const val CAMERA_PERMISSION_REQUEST_CODE = 1001
+
+/** Behind the camera picture and its top bar: night-navy, so the glass panels belong to it. */
+private val CameraBackdrop = Color(0xFF0A1322)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InferenceScreen(
     viewModel: InferenceViewModel,
-    onBack: () -> Unit
+    mode: AppMode,
+    onBack: () -> Unit,
+    onOpenObjectList: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -96,6 +109,35 @@ fun InferenceScreen(
     // Falls back to the bundled asset so the badge is readable while the
     // ONNX session is still starting up.
     val bundledModelInfo = remember { ModelInfo.read(context) }
+    val identifyEnabled by viewModel.identifyEnabled.collectAsState()
+    val classifierInfo by viewModel.classifierInfo.collectAsState()
+    val classifierError by viewModel.classifierError.collectAsState()
+    val bundledClassifierInfo = remember { ModelInfo.read(context, ModelInfo.CLASSIFIER_ASSET) }
+    val showDetails by viewModel.showDetails.collectAsState()
+    val teachState by viewModel.teachState.collectAsState()
+    val savedObjects by viewModel.savedObjects.collectAsState()
+    val readResult by viewModel.readResult.collectAsState()
+    var autoSpeak by remember { mutableStateOf(false) }
+    val speaker = rememberSpeaker()
+
+    LaunchedEffect(mode) { viewModel.setMode(mode) }
+
+    val savePhoto: () -> Unit = {
+        coroutineScope.launch {
+            val compositeBitmap = captureWithOverlays(viewModel.result.value)
+            if (compositeBitmap != null) {
+                val saved = saveBitmapToGallery(context, compositeBitmap)
+                compositeBitmap.recycle()
+                Toast.makeText(
+                    context,
+                    if (saved) "Photo saved to Gallery" else "Could not save the photo",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(context, "No camera picture yet", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     var hasCameraPermission by remember {
         mutableStateOf(
@@ -135,15 +177,31 @@ fun InferenceScreen(
     }
 
     Scaffold(
+        containerColor = CameraBackdrop,
         topBar = {
             TopAppBar(
-                title = { Text("ROI Detection Live") },
+                title = {
+                    Text(
+                        style = MaterialTheme.typography.titleLarge,
+                        text = when (mode) {
+                            AppMode.IDENTIFY -> "Identify"
+                            AppMode.MY_OBJECTS -> "My Objects"
+                            AppMode.READ -> "Read"
+                            AppMode.EARBUDS -> "Pair Earbuds"
+                        }
+                    )
+                },
                 navigationIcon = {
                     FilledIconButton(
                         onClick = {
                             viewModel.setRunning(false)
                             onBack()
-                        }
+                        },
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = Color(0x26FFFFFF),
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier.padding(start = 8.dp)
                     ) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
@@ -151,42 +209,33 @@ fun InferenceScreen(
                         )
                     }
                 },
+                actions = {
+                    if (mode == AppMode.IDENTIFY && showDetails) Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
+                        Text(
+                            text = "Identify",
+                            color = Color.White,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Spacer(modifier = Modifier.size(6.dp))
+                        Switch(
+                            checked = identifyEnabled && classifierError == null,
+                            onCheckedChange = { viewModel.setIdentifyEnabled(it) },
+                            enabled = classifierError == null
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Black.copy(alpha = 0.6f),
+                    containerColor = CameraBackdrop,
                     titleContentColor = Color.White,
                     navigationIconContentColor = Color.White
                 ),
                 modifier = Modifier.statusBarsPadding()
             )
         },
-        floatingActionButton = {
-            if (hasCameraPermission && isModelReady) {
-                FloatingActionButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val currentResult = viewModel.result.value
-                            val compositeBitmap = captureWithOverlays(currentResult)
-                            if (compositeBitmap != null) {
-                                val saved = saveBitmapToGallery(context, compositeBitmap)
-                                compositeBitmap.recycle()
-                                if (saved) {
-                                    Toast.makeText(context, "Screenshot saved to Gallery", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Toast.makeText(context, "Failed to save screenshot", Toast.LENGTH_SHORT).show()
-                                }
-                            } else {
-                                Toast.makeText(context, "No camera frame available", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    },
-                    containerColor = Color.White.copy(alpha = 0.8f),
-                    contentColor = Color.Black,
-                    modifier = Modifier.padding(bottom = 64.dp)
-                ) {
-                    Text("Capture", modifier = Modifier.padding(horizontal = 16.dp), fontWeight = FontWeight.Bold)
-                }
-            }
-        }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -194,109 +243,81 @@ fun InferenceScreen(
                 .padding(paddingValues)
         ) {
             if (!hasCameraPermission) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "Camera permission is required for inference.",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(
-                        onClick = {
-                            activity?.let {
-                                ActivityCompat.requestPermissions(
-                                    it,
-                                    arrayOf(Manifest.permission.CAMERA),
-                                    CAMERA_PERMISSION_REQUEST_CODE
-                                )
-                            }
+                CenteredMessage(
+                    title = "The camera is off",
+                    body = "This app needs the camera to see what you point at. Pictures stay on this phone.",
+                    action = "Turn on camera",
+                    onAction = {
+                        activity?.let {
+                            ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
                         }
-                    ) {
-                        Text("Grant Camera Permission")
                     }
-                }
+                )
             } else if (modelError != null) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "Model Loading Failed",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.error,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = modelError ?: "Unknown error",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Button(
-                        onClick = {
-                            viewModel.retryModelInitialization()
-                        }
-                    ) {
-                        Text("Retry")
-                    }
-                }
+                CenteredMessage(
+                    title = "The app could not start",
+                    body = modelError ?: "A model file could not be loaded.",
+                    action = "Try again",
+                    onAction = { viewModel.retryModelInitialization() }
+                )
             } else if (!isModelReady) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(32.dp),
+                    modifier = Modifier.fillMaxSize().padding(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(48.dp),
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    CircularProgressIndicator(modifier = Modifier.size(44.dp), color = Beam, strokeWidth = 3.dp)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = "Loading model...",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "SpatialNet v4",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                    )
+                    Text("Getting ready…", style = MaterialTheme.typography.bodyLarge, color = Color.White)
                 }
             } else {
                 CameraPreviewWithOverlay(
                     context = context,
                     viewModel = viewModel,
-                    result = result
+                    result = result,
+                    // Sharper frames for small text; the other modes keep the faster default.
+                    highResolution = mode == AppMode.READ || mode == AppMode.EARBUDS
                 )
             }
 
-            // Model identity badge, top-left
-            ModelBadge(
-                info = modelInfo ?: bundledModelInfo,
+            // Instruction, top centre
+            if (hasCameraPermission && isModelReady) {
+                GuidanceBanner(
+                    guidanceText(result, mode),
+                    modifier = Modifier.align(Alignment.TopCenter).padding(top = 12.dp, start = 16.dp, end = 16.dp)
+                )
+            }
+            // Model identity badges (technical details only), below the instruction
+            if (showDetails) Column(
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .padding(12.dp)
-            )
+                    .padding(start = 12.dp, top = 64.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                ModelBadge(info = modelInfo ?: bundledModelInfo)
+                if (classifierError != null) {
+                    ModelBadge(
+                        info = null,
+                        unavailableName = "object ID unavailable",
+                        unavailableDetail = classifierError ?: "",
+                        nameColor = Color(0xFFFF8A80)
+                    )
+                } else {
+                    ModelBadge(info = classifierInfo ?: bundledClassifierInfo)
+                }
+            }
 
-            // Stats overlay at bottom
-            if (hasCameraPermission && isModelReady) {
-                Surface(
+            // Stats (details only) and the mode's answer panel, bottom
+            if (hasCameraPermission && isModelReady) Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+            ) {
+                if (showDetails) Surface(
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     color = Color.Black.copy(alpha = 0.7f),
                     shape = MaterialTheme.shapes.small
                 ) {
@@ -315,7 +336,7 @@ fun InferenceScreen(
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = "${result.totalInferenceTimeMs}ms",
+                            text = inferenceTimeText(result),
                             color = Color.White,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium
@@ -340,9 +361,62 @@ fun InferenceScreen(
                         )
                     }
                 }
+                when (mode) {
+                    AppMode.IDENTIFY -> IdentifyPanel(result, speaker, onSavePhoto = savePhoto)
+                    AppMode.MY_OBJECTS -> MyObjectsPanel(
+                        result = result,
+                        teachState = teachState,
+                        savedCount = savedObjects.size,
+                        speaker = speaker,
+                        onTeach = viewModel::startTeaching,
+                        onCancelTeach = viewModel::cancelTeaching,
+                        onOpenList = onOpenObjectList
+                    )
+                    AppMode.READ -> ReadPanel(
+                        readResult = readResult,
+                        speaker = speaker,
+                        autoSpeak = autoSpeak,
+                        onAutoSpeakChange = { autoSpeak = it },
+                        onReadWholeView = viewModel::readWholeView,
+                        onClear = viewModel::clearReadResult
+                    )
+                    AppMode.EARBUDS -> EarbudsPanel(result, viewModel, speaker)
+                }
             }
         }
     }
+
+    (teachState as? TeachState.Naming)?.let { naming ->
+        TeachNameDialog(
+            state = naming,
+            existingNames = savedObjects.map { it.name },
+            onSave = viewModel::saveTaughtObject,
+            onCancel = viewModel::cancelTeaching
+        )
+    }
+}
+
+/** Title, explanation and one amber action, centred on the dark camera backdrop. */
+@Composable
+private fun CenteredMessage(title: String, body: String, action: String, onAction: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(title, style = MaterialTheme.typography.headlineSmall, color = Color.White, textAlign = TextAlign.Center)
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(body, style = MaterialTheme.typography.bodyLarge, color = Mist, textAlign = TextAlign.Center)
+        Spacer(modifier = Modifier.height(24.dp))
+        BeamButton(action, onClick = onAction)
+    }
+}
+
+/** SpatialNet time, plus the classifier time when a label is shown, e.g. "70ms + 18ms". */
+private fun inferenceTimeText(result: CombinedResult): String {
+    val classifierMs = result.objectResult?.inferenceTimeMs
+    return if (classifierMs != null) "${result.totalInferenceTimeMs}ms + ${classifierMs}ms"
+    else "${result.totalInferenceTimeMs}ms"
 }
 
 private fun getCategoryLabel(result: CombinedResult): String {
@@ -379,17 +453,16 @@ private fun getCategoryColorAndroid(result: CombinedResult): Int {
 private fun CameraPreviewWithOverlay(
     context: Context,
     viewModel: InferenceViewModel,
-    result: CombinedResult
+    result: CombinedResult,
+    highResolution: Boolean = false
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     val executor = remember { Executors.newSingleThreadExecutor() }
 
-    val roiResult = result.roiResult
-    val isPointing = result.isPointing
     val frame = result.frame
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+    Box(modifier = Modifier.fillMaxSize().background(CameraBackdrop)) {
         frame?.let {
             Image(
                 bitmap = it.asImageBitmap(),
@@ -414,138 +487,31 @@ private fun CameraPreviewWithOverlay(
             val offsetX = (canvasWidth - imageWidth) / 2f
             val offsetY = (canvasHeight - imageHeight) / 2f
 
-            if (isPointing) {
-                // POINTING MODE: Green ROI, Blue hand, Red fingertip, Yellow arrow
-
-                // Draw hand bounding box (blue dashed)
-                roiResult.handBBox?.let { bbox ->
-                    val corners = bbox.toCorners().clamp()
-                    drawDetectionBox(
-                        corners = corners,
-                        canvasWidth = imageWidth,
-                        canvasHeight = imageHeight,
-                        offsetX = offsetX,
-                        offsetY = offsetY,
-                        color = Color(0xFF2196F3),
-                        label = "Hand",
-                        strokeWidth = 3f
-                    )
-                }
-
-                // Draw ROI bounding box (green)
-                roiResult.roiBBox?.let { bbox ->
-                    val corners = bbox.toCorners().clamp()
-                    drawDetectionBox(
-                        corners = corners,
-                        canvasWidth = imageWidth,
-                        canvasHeight = imageHeight,
-                        offsetX = offsetX,
-                        offsetY = offsetY,
-                        color = Color(0xFF4CAF50),
-                        label = "ROI",
-                        strokeWidth = 3f
-                    )
-                }
-
-                // Draw fingertip point (red)
-                roiResult.fingertip?.let { ft ->
-                    val x = offsetX + ft.x * imageWidth
-                    val y = offsetY + ft.y * imageHeight
-
-                    drawCircle(
-                        color = Color(0xFFF44336),
-                        radius = 12f,
-                        center = Offset(x, y),
-                        style = Stroke(width = 3f)
-                    )
-                    drawCircle(
-                        color = Color(0xFFF44336),
-                        radius = 5f,
-                        center = Offset(x, y)
-                    )
-
-                    drawContext.canvas.nativeCanvas.drawText(
-                        "Fingertip",
-                        x + 16f,
-                        y - 8f,
-                        android.graphics.Paint().apply {
-                            color = android.graphics.Color.RED
-                            textSize = 28f
-                            isAntiAlias = true
-                            typeface = android.graphics.Typeface.DEFAULT_BOLD
-                        }
-                    )
-                }
-
-                // Draw pointing direction arrow (yellow)
-                roiResult.fingertip?.let { ft ->
-                    roiResult.pointingDir?.let { dir ->
-                        val startX = offsetX + ft.x * imageWidth
-                        val startY = offsetY + ft.y * imageHeight
-                        val arrowLength = 80f
-                        val angle = dir.angleRadians()
-                        val endX = startX + arrowLength * kotlin.math.cos(angle.toDouble()).toFloat()
-                        val endY = startY + arrowLength * kotlin.math.sin(angle.toDouble()).toFloat()
-
-                        drawLine(
-                            color = Color(0xFFFFEB3B),
-                            start = Offset(startX, startY),
-                            end = Offset(endX, endY),
-                            strokeWidth = 4f
-                        )
-
-                        val arrowHeadLen = 16f
-                        val arrowAngle = Math.toRadians(30.0)
-                        val angle1 = angle + Math.PI + arrowAngle
-                        val angle2 = angle + Math.PI - arrowAngle
-
-                        val path = Path().apply {
-                            moveTo(endX, endY)
-                            lineTo(
-                                endX + arrowHeadLen * kotlin.math.cos(angle1).toFloat(),
-                                endY + arrowHeadLen * kotlin.math.sin(angle1).toFloat()
-                            )
-                            moveTo(endX, endY)
-                            lineTo(
-                                endX + arrowHeadLen * kotlin.math.cos(angle2).toFloat(),
-                                endY + arrowHeadLen * kotlin.math.sin(angle2).toFloat()
-                            )
-                        }
-                        drawPath(
-                            path = path,
-                            color = Color(0xFFFFEB3B),
-                            style = Stroke(width = 3f)
-                        )
-                    }
-                }
-            } else {
-                // NON-POINTING MODE: Red hand box, "Non-Pointing" label
-                roiResult.handBBox?.let { bbox ->
-                    val corners = bbox.toCorners().clamp()
-                    drawDetectionBox(
-                        corners = corners,
-                        canvasWidth = imageWidth,
-                        canvasHeight = imageHeight,
-                        offsetX = offsetX,
-                        offsetY = offsetY,
-                        color = Color(0xFFF44336),
-                        label = "Non-Pointing",
-                        strokeWidth = 3f
-                    )
-                }
-            }
+            drawBeamOverlay(drawContext.canvas.nativeCanvas, result, offsetX, offsetY, imageWidth, imageHeight)
         }
     }
 
-    LaunchedEffect(cameraProviderFuture) {
+    LaunchedEffect(cameraProviderFuture, highResolution) {
         Log.i("InferenceScreen", "Binding camera use cases...")
         try {
             val cameraProvider = cameraProviderFuture.get()
             Log.i("InferenceScreen", "CameraProvider obtained")
 
-            val imageAnalysis = ImageAnalysis.Builder()
+            val builder = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build()
+            if (highResolution) {
+                builder.setResolutionSelector(
+                    ResolutionSelector.Builder()
+                        .setResolutionStrategy(
+                            ResolutionStrategy(
+                                android.util.Size(1280, 720),
+                                ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
+                            )
+                        )
+                        .build()
+                )
+            }
+            val imageAnalysis = builder.build()
                 .also {
                     it.setAnalyzer(executor) { imageProxy ->
                         viewModel.processFrame(imageProxy)
@@ -576,59 +542,6 @@ private fun CameraPreviewWithOverlay(
     }
 }
 
-private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawDetectionBox(
-    corners: com.example.roidetection.Corners,
-    canvasWidth: Float,
-    canvasHeight: Float,
-    offsetX: Float,
-    offsetY: Float,
-    color: Color,
-    label: String,
-    strokeWidth: Float
-) {
-    val x1 = offsetX + corners.x1 * canvasWidth
-    val y1 = offsetY + corners.y1 * canvasHeight
-    val x2 = offsetX + corners.x2 * canvasWidth
-    val y2 = offsetY + corners.y2 * canvasHeight
-    val boxWidth = x2 - x1
-    val boxHeight = y2 - y1
-
-    drawRect(
-        color = color,
-        topLeft = Offset(x1, y1),
-        size = Size(boxWidth, boxHeight),
-        style = Stroke(width = strokeWidth)
-    )
-
-    val cornerLen = minOf(20f, boxWidth * 0.15f, boxHeight * 0.15f)
-
-    drawLine(color, Offset(x1, y1), Offset(x1 + cornerLen, y1), strokeWidth + 1f)
-    drawLine(color, Offset(x1, y1), Offset(x1, y1 + cornerLen), strokeWidth + 1f)
-    drawLine(color, Offset(x2, y1), Offset(x2 - cornerLen, y1), strokeWidth + 1f)
-    drawLine(color, Offset(x2, y1), Offset(x2, y1 + cornerLen), strokeWidth + 1f)
-    drawLine(color, Offset(x1, y2), Offset(x1 + cornerLen, y2), strokeWidth + 1f)
-    drawLine(color, Offset(x1, y2), Offset(x1, y2 - cornerLen), strokeWidth + 1f)
-    drawLine(color, Offset(x2, y2), Offset(x2 - cornerLen, y2), strokeWidth + 1f)
-    drawLine(color, Offset(x2, y2), Offset(x2, y2 - cornerLen), strokeWidth + 1f)
-
-    drawContext.canvas.nativeCanvas.drawText(
-        label,
-        x1 + 4f,
-        y1 - 8f,
-        android.graphics.Paint().apply {
-            this.color = when (color) {
-                Color(0xFF2196F3) -> android.graphics.Color.BLUE
-                Color(0xFF4CAF50) -> android.graphics.Color.GREEN
-                Color(0xFFF44336) -> android.graphics.Color.RED
-                else -> android.graphics.Color.WHITE
-            }
-            textSize = 28f
-            isAntiAlias = true
-            typeface = android.graphics.Typeface.DEFAULT_BOLD
-        }
-    )
-}
-
 /**
  * Captures the latest camera frame and draws detection overlays on it.
  * This avoids the PixelCopy issue where SurfaceView content (camera preview)
@@ -646,89 +559,7 @@ private fun captureWithOverlays(
     val w = outputBitmap.width.toFloat()
     val h = outputBitmap.height.toFloat()
 
-    val roiResult = result.roiResult
-    val isPointing = result.isPointing
-
-    if (isPointing) {
-        // Draw hand bounding box (blue)
-        roiResult.handBBox?.let { bbox ->
-            val corners = bbox.toCorners().clamp()
-            drawBoxOnCanvas(canvas, corners, w, h, android.graphics.Color.BLUE, "Hand", 4f)
-        }
-
-        // Draw ROI bounding box (green)
-        roiResult.roiBBox?.let { bbox ->
-            val corners = bbox.toCorners().clamp()
-            drawBoxOnCanvas(canvas, corners, w, h, android.graphics.Color.GREEN, "ROI", 4f)
-        }
-
-        // Draw fingertip point (red)
-        roiResult.fingertip?.let { ft ->
-            val x = ft.x * w
-            val y = ft.y * h
-            val paint = android.graphics.Paint().apply {
-                color = android.graphics.Color.RED
-                style = android.graphics.Paint.Style.STROKE
-                strokeWidth = 4f
-                isAntiAlias = true
-            }
-            canvas.drawCircle(x, y, 14f, paint)
-            paint.style = android.graphics.Paint.Style.FILL
-            canvas.drawCircle(x, y, 6f, paint)
-
-            val textPaint = android.graphics.Paint().apply {
-                color = android.graphics.Color.RED
-                textSize = 32f
-                isAntiAlias = true
-                typeface = android.graphics.Typeface.DEFAULT_BOLD
-            }
-            canvas.drawText("Fingertip", x + 18f, y - 10f, textPaint)
-        }
-
-        // Draw pointing direction arrow (yellow)
-        roiResult.fingertip?.let { ft ->
-            roiResult.pointingDir?.let { dir ->
-                val startX = ft.x * w
-                val startY = ft.y * h
-                val arrowLength = 90f
-                val angle = dir.angleRadians()
-                val endX = startX + arrowLength * kotlin.math.cos(angle.toDouble()).toFloat()
-                val endY = startY + arrowLength * kotlin.math.sin(angle.toDouble()).toFloat()
-
-                val arrowPaint = android.graphics.Paint().apply {
-                    color = android.graphics.Color.YELLOW
-                    strokeWidth = 5f
-                    style = android.graphics.Paint.Style.STROKE
-                    isAntiAlias = true
-                }
-                canvas.drawLine(startX, startY, endX, endY, arrowPaint)
-
-                // Arrowhead
-                val arrowHeadLen = 18f
-                val arrowAngle = Math.toRadians(30.0)
-                val a1 = angle + Math.PI + arrowAngle
-                val a2 = angle + Math.PI - arrowAngle
-                canvas.drawLine(
-                    endX, endY,
-                    endX + arrowHeadLen * kotlin.math.cos(a1).toFloat(),
-                    endY + arrowHeadLen * kotlin.math.sin(a1).toFloat(),
-                    arrowPaint
-                )
-                canvas.drawLine(
-                    endX, endY,
-                    endX + arrowHeadLen * kotlin.math.cos(a2).toFloat(),
-                    endY + arrowHeadLen * kotlin.math.sin(a2).toFloat(),
-                    arrowPaint
-                )
-            }
-        }
-    } else {
-        // NON-POINTING: Red hand box
-        roiResult.handBBox?.let { bbox ->
-            val corners = bbox.toCorners().clamp()
-            drawBoxOnCanvas(canvas, corners, w, h, android.graphics.Color.RED, "Non-Pointing", 4f)
-        }
-    }
+    drawBeamOverlay(canvas, result, 0f, 0f, w, h)
 
     // Draw stats bar at the bottom
     val barPaint = android.graphics.Paint().apply {
@@ -751,64 +582,11 @@ private fun captureWithOverlays(
         !result.roiResult.isRoiDetected -> result.roiResult.pointConf
         else -> result.roiResult.roiConf
     }
-    val statsText = "${result.totalInferenceTimeMs}ms | $catLabel | ${"%.0f".format(activeConf * 100)}%"
+    val objectText = objectLabelText(result)?.let { " | $it" } ?: ""
+    val statsText = "${inferenceTimeText(result)} | $catLabel | ${"%.0f".format(activeConf * 100)}%$objectText"
     canvas.drawText(statsText, 16f, h - 14f, statsPaint)
 
     return outputBitmap
-}
-
-/**
- * Draws a labeled bounding box with corner accents on an Android Canvas.
- */
-private fun drawBoxOnCanvas(
-    canvas: android.graphics.Canvas,
-    corners: com.example.roidetection.Corners,
-    canvasW: Float,
-    canvasH: Float,
-    color: Int,
-    label: String,
-    strokeW: Float
-) {
-    val x1 = corners.x1 * canvasW
-    val y1 = corners.y1 * canvasH
-    val x2 = corners.x2 * canvasW
-    val y2 = corners.y2 * canvasH
-
-    val boxPaint = android.graphics.Paint().apply {
-        this.color = color
-        style = android.graphics.Paint.Style.STROKE
-        this.strokeWidth = strokeW
-        isAntiAlias = true
-    }
-    canvas.drawRect(x1, y1, x2, y2, boxPaint)
-
-    // Corner accents
-    val boxWidth = x2 - x1
-    val boxHeight = y2 - y1
-    val cornerLen = minOf(22f, boxWidth * 0.15f, boxHeight * 0.15f)
-    val cornerPaint = android.graphics.Paint().apply {
-        this.color = color
-        style = android.graphics.Paint.Style.STROKE
-        this.strokeWidth = strokeW + 2f
-        isAntiAlias = true
-    }
-    canvas.drawLine(x1, y1, x1 + cornerLen, y1, cornerPaint)
-    canvas.drawLine(x1, y1, x1, y1 + cornerLen, cornerPaint)
-    canvas.drawLine(x2, y1, x2 - cornerLen, y1, cornerPaint)
-    canvas.drawLine(x2, y1, x2, y1 + cornerLen, cornerPaint)
-    canvas.drawLine(x1, y2, x1 + cornerLen, y2, cornerPaint)
-    canvas.drawLine(x1, y2, x1, y2 - cornerLen, cornerPaint)
-    canvas.drawLine(x2, y2, x2 - cornerLen, y2, cornerPaint)
-    canvas.drawLine(x2, y2, x2, y2 - cornerLen, cornerPaint)
-
-    // Label
-    val textPaint = android.graphics.Paint().apply {
-        this.color = color
-        textSize = 32f
-        isAntiAlias = true
-        typeface = android.graphics.Typeface.DEFAULT_BOLD
-    }
-    canvas.drawText(label, x1 + 6f, y1 - 10f, textPaint)
 }
 
 private fun saveBitmapToGallery(context: Context, bitmap: Bitmap): Boolean {

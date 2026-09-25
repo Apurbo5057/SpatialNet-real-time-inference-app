@@ -1,0 +1,203 @@
+{
+  "id": "realme_buds_air_7",
+  "brand": "realme",
+  "model": "Buds Air7",
+  "releaseYear": 2025,
+  "specs": {
+    "batteryEarbudHours": "Up to 13 h (AAC, ANC off); 9 h (LHDC, ANC off); 7.5 h (AAC, ANC on); 5 h (LHDC, ANC on)",
+    "batteryWithCaseHours": "Up to 52 h (AAC, ANC off); 36 h (LHDC, ANC off); 30 h (AAC, ANC on); 20 h (LHDC, ANC on)",
+    "anc": true,
+    "bluetoothVersion": "5.4",
+    "codecs": [
+      "SBC",
+      "AAC",
+      "LHDC 5.0"
+    ],
+    "waterResistance": "IP55",
+    "earbudWeightGrams": 4.9,
+    "chargingPort": "USB-C",
+    "wirelessCharging": false,
+    "otherFeatures": [
+      "Up to 52 dB hybrid ANC with transparency mode",
+      "12.4 mm dynamic bass driver",
+      "6-mic call noise cancellation",
+      "45 ms low-latency game mode",
+      "360-degree spatial audio",
+      "Dual-device connection 2.0",
+      "Google Fast Pair",
+      "Windows Swift Pair",
+      "Hi-Res Audio certification",
+      "In-ear wear detection (optical sensor)",
+      "62 mAh earbud / 480 mAh case battery",
+      "Fast charge: 10 min for about 10 h playback",
+      "realme Link app",
+      "Product model number RMA2408",
+      "Colours: Lavender Purple and Moss Green (transparent lid), Ivory Gold (metallic lid)"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "realme Buds Air7"
+    ],
+    "namePatterns": [
+      "^realme Buds Air ?7$"
+    ],
+    "supportsGoogleFastPair": true,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": null,
+    "notes": "Confirmed on real earbuds (2026-09-25): Android's pairing chooser listed \"realme Buds Air7\". The official user guide (model RMA2408) says to tap \"realme Buds Air7\" (no space before 7) in the Bluetooth list, and FoneArena saw the same name. The pattern also accepts an optional space but not 'Pro', so it will not match the Buds Air7 Pro. Google Fast Pair is supported (official guide, and the Fast Pair tile on realme's marketplace listing images). realme/OPPO/OnePlus ColorOS phones show a pop-up when the case is opened. No published Fast Pair model ID was found. The Bluetooth SIG company ID was not verified.",
+    "verifiedOnDevice": true
+  },
+  "pairingSteps": [
+    "Turn on Bluetooth on the Android phone.",
+    "Leave the earbuds in the charging case and open the lid.",
+    "Press and hold the function button on the case for 3 seconds until the indicator blinks. The earbuds are now in pairing mode.",
+    "On the phone, open Bluetooth settings and tap \"realme Buds Air7\" in the device list.",
+    "Or, with Google Fast Pair: open the case near the phone and follow the Fast Pair pop-up on the screen.",
+    "If pairing fails: open the case and hold the function button for 10 seconds to restore factory settings, then try again."
+  ],
+  "sources": {
+    "specs": [
+      "https://www.manualpdf.in/realme/buds-air-7/manual",
+      "https://www.realme.com/in/more-products/realme-buds-air-7",
+      "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html",
+      "https://www.geekman.in/realme-buds-air-7-review/",
+      "https://www.amazon.com/dp/B0F1Y774RM"
+    ],
+    "pairing": [
+      "https://www.manualpdf.in/realme/buds-air-7/manual",
+      "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html"
+    ],
+    "bluetoothName": [
+      "https://www.manualpdf.in/realme/buds-air-7/manual",
+      "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html"
+    ]
+  },
+  "images": [
+    {
+      "file": "realme_buds_air_7_01.jpg",
+      "source": "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html",
+      "view": "real-life photo: lavender purple, bud worn in ear, man side profile, indoors"
+    },
+    {
+      "file": "realme_buds_air_7_02.jpg",
+      "source": "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html",
+      "view": "real-life photo: lavender purple, both buds held between fingers, stem/touch-area view, outdoors"
+    },
+    {
+      "file": "realme_buds_air_7_03.jpg",
+      "source": "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html",
+      "view": "real-life photo: lavender purple, closed case held in hand, rear with USB-C port and Hi-Res label"
+    },
+    {
+      "file": "realme_buds_air_7_04.jpg",
+      "source": "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html",
+      "view": "real-life photo: lavender purple, closed transparent-lid case held in hand, buds visible through lid"
+    },
+    {
+      "file": "realme_buds_air_7_05.jpg",
+      "source": "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html",
+      "view": "real-life photo: lavender purple, case open held in hand, buds inside, front LED visible"
+    },
+    {
+      "file": "realme_buds_air_7_06.jpg",
+      "source": "https://www.fonearena.com/blog/449175/realme-buds-air-7-review.html",
+      "view": "real-life photo: lavender purple, case open with buds inside standing in front of retail box"
+    },
+    {
+      "file": "realme_buds_air_7_07.jpg",
+      "source": "https://www.gizbot.com/wearable-technology/reviews/realme-buds-air7-review-raising-the-bar-for-budget-earbuds-112737.html",
+      "view": "real-life photo: lavender purple, closed transparent-lid case on grey carpet, buds visible inside"
+    },
+    {
+      "file": "realme_buds_air_7_08.jpg",
+      "source": "https://www.gizbot.com/wearable-technology/reviews/realme-buds-air7-review-raising-the-bar-for-budget-earbuds-112737.html",
+      "view": "real-life photo: lavender purple, case open with both buds lying in front, on carpet"
+    },
+    {
+      "file": "realme_buds_air_7_09.jpg",
+      "source": "https://www.gizbot.com/wearable-technology/reviews/realme-buds-air7-review-raising-the-bar-for-budget-earbuds-112737.html",
+      "view": "real-life photo: lavender purple, closed case held in fingers, USB-C side close-up"
+    },
+    {
+      "file": "realme_buds_air_7_10.jpg",
+      "source": "https://www.gizbot.com/wearable-technology/reviews/realme-buds-air7-review-raising-the-bar-for-budget-earbuds-112737.html",
+      "view": "real-life photo: lavender purple, single bud lying on carpet, close-up"
+    },
+    {
+      "file": "realme_buds_air_7_11.jpg",
+      "source": "https://www.scarbir.com/tws/realme-buds-air-7-review",
+      "view": "real-life photo: ivory gold, metallic case closed with buds beside it, on stone ledge by a pool"
+    },
+    {
+      "file": "realme_buds_air_7_12.jpg",
+      "source": "https://www.scarbir.com/tws/realme-buds-air-7-review",
+      "view": "real-life photo: ivory gold, case open with one bud inside and one outside, on stone ledge"
+    },
+    {
+      "file": "realme_buds_air_7_13.jpg",
+      "source": "https://www.scarbir.com/tws/realme-buds-air-7-review",
+      "view": "real-life photo: ivory gold, bud worn in ear, side profile, outdoors"
+    },
+    {
+      "file": "realme_buds_air_7_14.jpg",
+      "source": "https://www.geekman.in/realme-buds-air-7-review/",
+      "view": "real-life photo: dark grey-green (likely Moss Green), case open held in palm, buds inside"
+    },
+    {
+      "file": "realme_buds_air_7_15.jpg",
+      "source": "https://www.geekman.in/realme-buds-air-7-review/",
+      "view": "real-life photo: dark grey-green (likely Moss Green), case open behind two buds on a white table"
+    },
+    {
+      "file": "realme_buds_air_7_16.jpg",
+      "source": "https://www.geekman.in/realme-buds-air-7-review/",
+      "view": "real-life photo: dark grey-green (likely Moss Green), closed case held in hand, rear with USB-C port"
+    },
+    {
+      "file": "realme_buds_air_7_17.jpg",
+      "source": "https://www.geekman.in/realme-buds-air-7-review/",
+      "view": "real-life photo: dark grey-green (likely Moss Green), both buds in an open palm"
+    },
+    {
+      "file": "realme_buds_air_7_18.jpg",
+      "source": "https://www.geekman.in/realme-buds-air-7-review/",
+      "view": "real-life photo: dark grey-green (likely Moss Green), closed case held in palm, top view"
+    },
+    {
+      "file": "realme_buds_air_7_19.jpg",
+      "source": "https://www.geekman.in/realme-buds-air-7-review/",
+      "view": "real-life photo: dark grey-green (likely Moss Green), case open in hand, buds inside, front view"
+    },
+    {
+      "file": "realme_buds_air_7_20.jpg",
+      "source": "https://www.geekman.in/realme-buds-air-7-review/",
+      "view": "real-life photo: dark grey-green (likely Moss Green), closed case held up between fingers, logo on lid"
+    },
+    {
+      "file": "realme_buds_air_7_21.jpg",
+      "source": "https://www.amazon.com/dp/B0F1Y774RM",
+      "view": "product shot: lavender purple, both buds front view, white background"
+    },
+    {
+      "file": "realme_buds_air_7_22.jpg",
+      "source": "https://www.amazon.com/dp/B0F1Y774RM",
+      "view": "product shot: lavender purple, case open with buds floating above, white background"
+    },
+    {
+      "file": "realme_buds_air_7_23.jpg",
+      "source": "https://www.amazon.com/dp/B0F1Y774RM",
+      "view": "product shot: lavender purple, closed transparent-lid case top view with buds visible, white background"
+    },
+    {
+      "file": "realme_buds_air_7_24.jpg",
+      "source": "https://www.amazon.com/dp/B0F1Y774RM",
+      "view": "product shot: ivory gold, case open with buds floating above, white background"
+    },
+    {
+      "file": "realme_buds_air_7_25.jpg",
+      "source": "https://www.amazon.com/dp/B0F41M61D1",
+      "view": "product shot: ivory gold, closed metallic case top view with realme logo, white background"
+    }
+  ]
+}

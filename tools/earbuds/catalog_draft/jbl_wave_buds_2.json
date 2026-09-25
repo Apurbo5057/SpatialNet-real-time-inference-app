@@ -1,0 +1,196 @@
+{
+  "id": "jbl_wave_buds_2",
+  "brand": "JBL",
+  "model": "Wave Buds 2",
+  "releaseYear": 2024,
+  "specs": {
+    "batteryEarbudHours": "Up to 10 (ANC off) / up to 8 (ANC on)",
+    "batteryWithCaseHours": "Up to 40 (ANC off; 10 in buds + 30 from case)",
+    "anc": true,
+    "bluetoothVersion": "5.3",
+    "codecs": [
+      "SBC",
+      "AAC"
+    ],
+    "waterResistance": "IP54 (earbuds), IPX2 (case)",
+    "earbudWeightGrams": 4.5,
+    "chargingPort": "USB-C",
+    "wirelessCharging": false,
+    "otherFeatures": [
+      "8 mm dynamic drivers, JBL Pure Bass",
+      "Smart Ambient (Ambient Aware / TalkThru)",
+      "4 mics (2 per earbud) for calls",
+      "Multi-point connection (2 devices at once, up to 8 remembered)",
+      "Google Fast Pair and Microsoft Swift Pair",
+      "Speed charge: 10 min = 3 h playback",
+      "JBL Headphones app (EQ, voice prompts, Relax Mode)",
+      "Stereo or mono (single-bud) use",
+      "Lidless 'open' charging case (35 g), 550 mAh case battery, 49 mAh per bud",
+      "Colours: Black, White, Blue, Pink"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "JBL Wave Buds 2"
+    ],
+    "namePatterns": [
+      "(?i)^JBL Wave Buds 2\\b.*"
+    ],
+    "supportsGoogleFastPair": true,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": null,
+    "notes": "Official Quick Start Guide shows Android Fast Pair popup 'JBL Wave Buds 2', Windows Swift Pair 'New JBL Wave Buds 2 found', and instructs to choose 'JBL Wave Buds 2' in Bluetooth settings. Pattern must NOT be loosened to '^JBL Wave Buds' alone, since the original Wave Buds (2023) advertise 'JBL Wave Buds' and look almost identical. Also distinct from 'JBL Wave Beam 2' / 'JBL Wave Flex 2'. BLE advertisements may additionally carry a Fast Pair service (UUID 0xFE2C) but the model ID is not published. JBL is owned by HARMAN (a Samsung subsidiary); manufacturer company ID not verified, left null. Manual-pairing gesture wording in pairingSteps is interpreted from the QSG pictograms (text-light guide) and should be confirmed on a real unit.",
+    "verifiedOnDevice": false
+  },
+  "pairingSteps": [
+    "Put both earbuds in the charging case to charge, then take them out; they power on and enter pairing mode automatically on first use.",
+    "Android 6+ with Google Fast Pair: keep the earbuds near the unlocked phone and tap 'Connect' on the 'JBL Wave Buds 2' popup.",
+    "Otherwise open Settings > Bluetooth on the phone and choose 'JBL Wave Buds 2'.",
+    "To pair another phone (multi-point, max 2 connected): with the earbuds out of the case, tap once then touch and hold the earbud touch surface for 5 seconds (per the QSG 'Multi-point connection' diagram) until they enter pairing mode, then select 'JBL Wave Buds 2' on the new device.",
+    "If pairing fails: forget 'JBL Wave Buds 2' on the phone, factory-reset the earbuds as shown in the QSG 'Factory reset' diagram (touch-gesture sequence on the earbuds; exact order of 'tap x2' and 'hold 5 s' is only shown graphically), then pair again."
+  ],
+  "sources": {
+    "specs": [
+      "https://global.jbl.com/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw550dd34b/pdfs/JBL_Wave_Buds_2_Specsheet_EN.pdf",
+      "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "https://global.jbl.com/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw104a2f2f/pdfs/LS_JBL_Wave%20Buds%202_QSG.pdf",
+      "https://www.fonearena.com/blog/442470/jbl-wave-buds-2-wave-beam-2-price-india-features.html",
+      "https://note.com/fond_pika4304/n/n2c1977d8ec9a",
+      "https://audiopick.in/reviews/jbl-wave-buds-2-review/"
+    ],
+    "pairing": [
+      "https://global.jbl.com/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw104a2f2f/pdfs/LS_JBL_Wave%20Buds%202_QSG.pdf",
+      "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html"
+    ],
+    "bluetoothName": [
+      "https://global.jbl.com/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw104a2f2f/pdfs/LS_JBL_Wave%20Buds%202_QSG.pdf"
+    ]
+  },
+  "images": [
+    {
+      "file": "jbl_wave_buds_2_01.jpg",
+      "source": "https://www.guidelee.de/test/kopfhorer/jbl-wave-2-buds-beam-flex/",
+      "view": "real-life: black lidless case with both buds seated, on stone paving outdoors"
+    },
+    {
+      "file": "jbl_wave_buds_2_02.jpg",
+      "source": "https://www.guidelee.de/test/kopfhorer/jbl-wave-2-buds-beam-flex/",
+      "view": "real-life: black case held in hand, side view, grass background"
+    },
+    {
+      "file": "jbl_wave_buds_2_03.jpg",
+      "source": "https://www.guidelee.de/test/kopfhorer/jbl-wave-2-buds-beam-flex/",
+      "view": "real-life: black case held in hand, top view showing both buds inside, grass background"
+    },
+    {
+      "file": "jbl_wave_buds_2_04.jpg",
+      "source": "https://www.guidelee.de/test/kopfhorer/jbl-wave-2-buds-beam-flex/",
+      "view": "real-life: black case with two buds lying beside it on stone surface"
+    },
+    {
+      "file": "jbl_wave_buds_2_05.jpg",
+      "source": "https://www.guidelee.de/test/kopfhorer/jbl-wave-2-buds-beam-flex/",
+      "view": "real-life: black case top view with buds inside, orange USB-C cable, wooden floor"
+    },
+    {
+      "file": "jbl_wave_buds_2_06.jpg",
+      "source": "https://www.guidelee.de/test/kopfhorer/jbl-wave-2-buds-beam-flex/",
+      "view": "real-life: black case with spare ear tips, orange cable and manual on wooden floor (unboxing)"
+    },
+    {
+      "file": "jbl_wave_buds_2_07.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): black case with buds, LED lit, one bud outside on patterned bedsheet"
+    },
+    {
+      "file": "jbl_wave_buds_2_08.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): black case held in hand, top view with both buds inside"
+    },
+    {
+      "file": "jbl_wave_buds_2_09.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): black case with both buds out in front, on white cloth"
+    },
+    {
+      "file": "jbl_wave_buds_2_10.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): black case with buds inside, front view, on white cloth"
+    },
+    {
+      "file": "jbl_wave_buds_2_11.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): black case with two buds beside it on white table"
+    },
+    {
+      "file": "jbl_wave_buds_2_12.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): black case with buds held in hand, LED lit, indoor clutter"
+    },
+    {
+      "file": "jbl_wave_buds_2_13.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): black case with both buds inside on wooden desk, angled top view"
+    },
+    {
+      "file": "jbl_wave_buds_2_14.jpg",
+      "source": "https://www.amazon.in/dp/B0DHL63KWK",
+      "view": "real-life (customer photo): pink case (warm light, looks peach) closed on desk in front of laptop"
+    },
+    {
+      "file": "jbl_wave_buds_2_15.jpg",
+      "source": "https://www.youtube.com/watch?v=f6ZbSg2W7CQ",
+      "view": "real-life (video thumbnail, text overlay): black case and two buds held in hands"
+    },
+    {
+      "file": "jbl_wave_buds_2_16.jpg",
+      "source": "https://www.amazon.co.uk/dp/B0DHL63KWK",
+      "view": "marketing lifestyle: blue earbud worn in a man's ear, outdoors (text overlay)"
+    },
+    {
+      "file": "jbl_wave_buds_2_17.jpg",
+      "source": "https://www.amazon.co.uk/dp/B0DHL63KWK",
+      "view": "marketing lifestyle: black earbud worn in a woman's ear, street (text overlay)"
+    },
+    {
+      "file": "jbl_wave_buds_2_18.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: black case front with one bud, white background"
+    },
+    {
+      "file": "jbl_wave_buds_2_19.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: black case angled with bud inside and one bud floating, white background"
+    },
+    {
+      "file": "jbl_wave_buds_2_20.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: two black buds, inner side with ear tips and charging contacts"
+    },
+    {
+      "file": "jbl_wave_buds_2_21.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: white case front with one bud, white background"
+    },
+    {
+      "file": "jbl_wave_buds_2_22.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: blue (mint) case front with one bud, white background"
+    },
+    {
+      "file": "jbl_wave_buds_2_23.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: two blue (mint) buds, outer face with JBL logo"
+    },
+    {
+      "file": "jbl_wave_buds_2_24.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: pink case front with one bud, white background"
+    },
+    {
+      "file": "jbl_wave_buds_2_25.jpg",
+      "source": "https://global.jbl.com/wireless-earbuds/WAVE-BUDS-2.html",
+      "view": "product shot: pink case top-down view with both buds seated"
+    }
+  ]
+}

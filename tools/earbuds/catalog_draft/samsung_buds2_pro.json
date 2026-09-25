@@ -1,0 +1,253 @@
+{
+  "id": "samsung_buds2_pro",
+  "brand": "Samsung",
+  "model": "Galaxy Buds2 Pro",
+  "releaseYear": 2022,
+  "specs": {
+    "batteryEarbudHours": "5 (ANC on) / 8 (ANC off)",
+    "batteryWithCaseHours": "18 (ANC on)",
+    "anc": true,
+    "bluetoothVersion": "5.3",
+    "codecs": [
+      "SSC (Samsung Seamless Codec) HiFi",
+      "AAC",
+      "SBC"
+    ],
+    "waterResistance": "IPX7",
+    "earbudWeightGrams": 5.5,
+    "chargingPort": "USB-C",
+    "wirelessCharging": true,
+    "otherFeatures": [
+      "Model SM-R510",
+      "Colours: Graphite, White, Bora Purple",
+      "24-bit Hi-Fi audio (on supported Galaxy devices)",
+      "Custom coaxial 2-way speaker",
+      "6 high-SNR microphones",
+      "Voice Detect",
+      "360 Audio with head tracking",
+      "Auto Switch",
+      "SmartThings Find",
+      "Bixby voice wake-up",
+      "Neck stretch reminder",
+      "Accelerometer, gyro, hall, proximity, touch sensors, VPU",
+      "Earbud battery 61 mAh, case 515 mAh",
+      "Earbud 21.6 x 19.9 x 18.7 mm; case 50.2 x 50.1 x 27.7 mm, 43.4 g",
+      "Bluetooth profiles A2DP, AVRCP, HFP; LE Audio support announced",
+      "Case is not water resistant (only earbuds IPX7)"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "Galaxy Buds2 Pro (XXXX)"
+    ],
+    "namePatterns": [
+      "^Galaxy Buds2 Pro\\b.*"
+    ],
+    "supportsGoogleFastPair": null,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": null,
+    "notes": "The name starts with 'Galaxy Buds2 Pro'. The ' (XXXX)' 4-character suffix follows the usual Galaxy Buds naming but no source found spelling it out for this model, so treat it as unverified. It can be renamed in Galaxy Wearable; a SamMobile review screenshot shows a renamed 'Samsung's Buds2 Pro'. Check the Pro pattern before plain 'Galaxy Buds2', because 'Galaxy Buds2' also prefix-matches. GalaxyBudsClient matches by name.Contains('Buds2 Pro') and otherwise by SPP service UUID prefix d908aab5-7a90-4cbe-8641-86a553db + device ID. It also treats a device with SPP-new + Handsfree + LE Audio UUIDs as Buds2 Pro. Galaxy Wearable app needed for extras.",
+    "verifiedOnDevice": false
+  },
+  "pairingSteps": [
+    "Put both earbuds in the charging case (if the earbud light does not flash, charge the case for 10+ minutes).",
+    "Close the case lid, then open it. The earbuds enter Bluetooth pairing mode automatically; Samsung phones show a connect pop-up.",
+    "On other phones, turn on Bluetooth and select 'Galaxy Buds2 Pro' (or use the Galaxy Wearable app).",
+    "If they are not found or already paired elsewhere: with the buds in the open case, touch and hold both earbuds for more than 3 seconds. The earbud lights flash red, green and blue in pairing mode.",
+    "Pairing mode turns off after 3 minutes; close and reopen the case to try again."
+  ],
+  "sources": {
+    "specs": [
+      "https://www.samsung.com/africa_en/audio-sound/galaxy-buds/galaxy-buds2-pro-graphite-sm-r510nzaaxfa/",
+      "https://www.samsung.com/africa_en/audio-sound/galaxy-buds/galaxy-buds2-pro-white-sm-r510nzwaxfa/",
+      "https://www.samsung.com/africa_en/audio-sound/galaxy-buds/galaxy-buds2-pro-bora-purple-sm-r510nlvaxfa/",
+      "https://www.sammobile.com/wp-content/uploads/2022/08/Samsung-Galaxy-Buds-2-Pro-User-Manual.pdf",
+      "https://en.wikipedia.org/wiki/Samsung_Galaxy_Buds_series"
+    ],
+    "pairing": [
+      "https://www.sammobile.com/wp-content/uploads/2022/08/Samsung-Galaxy-Buds-2-Pro-User-Manual.pdf",
+      "https://www.samsung.com/us/support/answer/ANS10001319/"
+    ],
+    "bluetoothName": [
+      "https://github.com/timschneeb/GalaxyBudsClient/blob/master/GalaxyBudsClient/Model/Specifications/DeviceSpecHelper.cs",
+      "https://www.sammobile.com/samsung/galaxy-buds-2-pro/review/"
+    ]
+  },
+  "images": [
+    {
+      "file": "samsung_buds2_pro_01.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-2-pro-review-78415/",
+      "view": "closed graphite case on colourful fabric"
+    },
+    {
+      "file": "samsung_buds2_pro_02.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-2-pro-review-78415/",
+      "view": "graphite case open with buds inside, on colourful fabric"
+    },
+    {
+      "file": "samsung_buds2_pro_03.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-2-pro-review-78415/",
+      "view": "hand holding open graphite case with buds inside, plants behind"
+    },
+    {
+      "file": "samsung_buds2_pro_04.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-2-pro-review-78415/",
+      "view": "close-up of graphite buds seated in open case"
+    },
+    {
+      "file": "samsung_buds2_pro_05.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-2-pro-review-78415/",
+      "view": "person wearing graphite bud, finger touching it, outdoors"
+    },
+    {
+      "file": "samsung_buds2_pro_06.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-2-pro-review-78415/",
+      "view": "macro of two graphite buds (L marking, ear tips), on fabric"
+    },
+    {
+      "file": "samsung_buds2_pro_07.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-2-pro-review-78415/",
+      "view": "two graphite buds on wet fabric beside a glass of water"
+    },
+    {
+      "file": "samsung_buds2_pro_08.jpg",
+      "source": "https://www.sammobile.com/samsung/galaxy-buds-2-pro/review/",
+      "view": "man wearing graphite bud, side profile, dark studio background"
+    },
+    {
+      "file": "samsung_buds2_pro_09.jpg",
+      "source": "https://www.sammobile.com/samsung/galaxy-buds-2-pro/review/",
+      "view": "hands taking graphite buds out of the case"
+    },
+    {
+      "file": "samsung_buds2_pro_10.jpg",
+      "source": "https://www.sammobile.com/samsung/galaxy-buds-2-pro/review/",
+      "view": "hands holding open graphite case with buds inside"
+    },
+    {
+      "file": "samsung_buds2_pro_11.jpg",
+      "source": "https://www.sammobile.com/samsung/galaxy-buds-2-pro/review/",
+      "view": "man wearing graphite bud on a subway train"
+    },
+    {
+      "file": "samsung_buds2_pro_12.jpg",
+      "source": "https://www.techgearlab.com/reviews/audio/wireless-earbuds/samsung-galaxy-buds2-pro",
+      "view": "hand holding open graphite case with buds inside, plain background"
+    },
+    {
+      "file": "samsung_buds2_pro_13.jpg",
+      "source": "https://www.techgearlab.com/reviews/audio/wireless-earbuds/samsung-galaxy-buds2-pro",
+      "view": "graphite bud in ear, close-up, bearded man"
+    },
+    {
+      "file": "samsung_buds2_pro_14.jpg",
+      "source": "https://www.techgearlab.com/reviews/audio/wireless-earbuds/samsung-galaxy-buds2-pro",
+      "view": "graphite bud in woman's ear, close-up"
+    },
+    {
+      "file": "samsung_buds2_pro_15.jpg",
+      "source": "https://hitechcentury.com/samsung-galaxy-buds2-pro-review/",
+      "view": "Bora Purple closed case in front of retail box, marble table"
+    },
+    {
+      "file": "samsung_buds2_pro_16.jpg",
+      "source": "https://hitechcentury.com/samsung-galaxy-buds2-pro-review/",
+      "view": "Bora Purple case open with buds inside, box behind, marble table"
+    },
+    {
+      "file": "samsung_buds2_pro_17.jpg",
+      "source": "https://hitechcentury.com/samsung-galaxy-buds2-pro-review/",
+      "view": "two Bora Purple buds on marble (outer and inner side)"
+    },
+    {
+      "file": "samsung_buds2_pro_18.jpg",
+      "source": "https://hitechcentury.com/samsung-galaxy-buds2-pro-review/",
+      "view": "Bora Purple buds and closed case on glass table beside a phone"
+    },
+    {
+      "file": "samsung_buds2_pro_19.jpg",
+      "source": "https://hitechcentury.com/samsung-galaxy-buds2-pro-review/",
+      "view": "hand holding open Bora Purple case with buds inside, cafe background"
+    },
+    {
+      "file": "samsung_buds2_pro_20.jpg",
+      "source": "https://www.techradar.com/reviews/samsung-galaxy-buds-2-pro",
+      "view": "hand holding white bud next to open white case with other bud"
+    },
+    {
+      "file": "samsung_buds2_pro_21.jpg",
+      "source": "https://www.techradar.com/reviews/samsung-galaxy-buds-2-pro",
+      "view": "white case open with white buds inside, top view on white table"
+    },
+    {
+      "file": "samsung_buds2_pro_22.jpg",
+      "source": "https://www.samsung.com/africa_en/audio-sound/galaxy-buds/galaxy-buds2-pro-bora-purple-sm-r510nlvaxfa/",
+      "view": "product shot: Bora Purple case open with buds inside, top view, black background"
+    },
+    {
+      "file": "samsung_buds2_pro_23.jpg",
+      "source": "https://www.samsung.com/africa_en/audio-sound/galaxy-buds/galaxy-buds2-pro-white-sm-r510nzwaxfa/",
+      "view": "product shot: white case open with white buds inside, top view, black background"
+    },
+    {
+      "file": "samsung_buds2_pro_24.jpg",
+      "source": "https://www.samsung.com/africa_en/audio-sound/galaxy-buds/galaxy-buds2-pro-white-sm-r510nzwaxfa/",
+      "view": "product shot: pair of white buds (outer and inner), black background"
+    },
+    {
+      "file": "samsung_buds2_pro_25.jpg",
+      "source": "https://www.samsung.com/africa_en/audio-sound/galaxy-buds/galaxy-buds2-pro-graphite-sm-r510nzaaxfa/",
+      "view": "product shot: closed graphite case angled, USB-C port visible, black background"
+    },
+    {
+      "file": "samsung_buds2_pro_26.jpg",
+      "source": "https://www.androidauthority.com/samsung-galaxy-buds-2-pro-review-3207774/",
+      "view": "close-up of one white bud (no wing) held between fingers"
+    },
+    {
+      "file": "samsung_buds2_pro_27.jpg",
+      "source": "https://www.trustedreviews.com/reviews/samsung-galaxy-buds-2-pro",
+      "view": "two white buds (no wing) in open palm, bookshelf behind"
+    },
+    {
+      "file": "samsung_buds2_pro_28.jpg",
+      "source": "https://www.trustedreviews.com/reviews/samsung-galaxy-buds-2-pro",
+      "view": "open white case with white buds inside, front view on wooden desk"
+    },
+    {
+      "file": "samsung_buds2_pro_29.jpg",
+      "source": "https://www.trustedreviews.com/reviews/samsung-galaxy-buds-2-pro",
+      "view": "two white buds (inner and outer side) in front of open empty white case, wooden desk"
+    },
+    {
+      "file": "samsung_buds2_pro_30.jpg",
+      "source": "https://www.xda-developers.com/samsung-galaxy-buds-2-pro-review/",
+      "view": "Bora Purple buds beside open Bora Purple case, dark cafe table"
+    },
+    {
+      "file": "samsung_buds2_pro_31.jpg",
+      "source": "https://www.xda-developers.com/samsung-galaxy-buds-2-pro-review/",
+      "view": "hand holding Bora Purple bud (round, no wing), case and other bud behind"
+    },
+    {
+      "file": "samsung_buds2_pro_32.jpg",
+      "source": "https://www.xda-developers.com/samsung-galaxy-buds-2-pro-review/",
+      "view": "open Bora Purple case with buds inside, side angle on dark table"
+    },
+    {
+      "file": "samsung_buds2_pro_33.jpg",
+      "source": "https://www.xda-developers.com/samsung-galaxy-buds-2-pro-review/",
+      "view": "single Bora Purple bud in open palm, inner side with ear tip"
+    },
+    {
+      "file": "samsung_buds2_pro_34.jpg",
+      "source": "https://www.xda-developers.com/samsung-galaxy-buds-2-pro-review/",
+      "view": "close-up of Bora Purple bud inner side (sensors, ear tip) held between fingers"
+    },
+    {
+      "file": "samsung_buds2_pro_35.jpg",
+      "source": "https://www.androidauthority.com/samsung-galaxy-buds-2-pro-review-3207774/",
+      "view": "two graphite buds (no wing) in front of open graphite case, inside retail box tray"
+    }
+  ]
+}

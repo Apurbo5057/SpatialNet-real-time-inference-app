@@ -28,6 +28,9 @@ data class ModelInfo(
     companion object {
         private const val TAG = "ModelInfo"
         val SPATIALNET_ASSET = BuildConfig.MODEL_ASSET
+        val CLASSIFIER_ASSET = BuildConfig.CLASSIFIER_ASSET
+        val CLASSIFIER_LABELS_ASSET = BuildConfig.CLASSIFIER_LABELS_ASSET
+        val EARBUDS_MODEL_ASSET = BuildConfig.EARBUDS_MODEL_ASSET
 
         private val cache = HashMap<String, ModelInfo>()
 

@@ -19,3 +19,9 @@ replay_pid*.log
 .externalNativeBuild
 .cxx
 local.properties
+
+# Earbud reference photos downloaded from the web: private, never pushed
+/tools/earbuds/web_images/
+/tools/earbuds/out/
+/tools/earbuds/removed/
+/.playwright-mcp/

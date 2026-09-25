@@ -1,0 +1,249 @@
+{
+  "id": "samsung_buds_fe",
+  "brand": "Samsung",
+  "model": "Galaxy Buds FE",
+  "releaseYear": 2023,
+  "specs": {
+    "batteryEarbudHours": "6 (ANC on) / 8.5 (ANC off)",
+    "batteryWithCaseHours": "21 (ANC on) / 30 (ANC off)",
+    "anc": true,
+    "bluetoothVersion": "5.2",
+    "codecs": [
+      "SSC (Samsung Scalable Codec)",
+      "AAC",
+      "SBC"
+    ],
+    "waterResistance": "IPX2",
+    "earbudWeightGrams": 5.6,
+    "chargingPort": "USB-C",
+    "wirelessCharging": false,
+    "otherFeatures": [
+      "Model SM-R400N",
+      "Colours: Graphite, White",
+      "Removable wing tips",
+      "6 microphones",
+      "Custom 1-way speaker",
+      "Ambient sound",
+      "Auto Switch",
+      "SmartThings Find",
+      "Bixby voice wake-up",
+      "Hall, proximity and touch sensors",
+      "Earbud battery 60 mAh, case 479 mAh",
+      "Earbud 19.2 x 17.1 x 22.2 mm; case 50.0 x 50.0 x 27.7 mm, 40 g",
+      "Bluetooth profiles A2DP, AVRCP, HFP"
+    ]
+  },
+  "bluetooth": {
+    "defaultNames": [
+      "Galaxy Buds FE (XXXX)"
+    ],
+    "namePatterns": [
+      "^Galaxy Buds FE\\b.*"
+    ],
+    "supportsGoogleFastPair": null,
+    "fastPairModelId": null,
+    "manufacturerCompanyId": null,
+    "notes": "The name starts with 'Galaxy Buds FE'. The ' (XXXX)' 4-character suffix follows the usual Galaxy Buds naming but no source found spelling it out for this model, so treat it as unverified. Users can rename the buds in Galaxy Wearable (Earbuds settings > About earbuds > Edit), so name matching is not reliable. GalaxyBudsClient (open source) matches by name.Contains('Buds FE') and, for Buds2 and later, prefers the SPP service UUID prefix d908aab5-7a90-4cbe-8641-86a553db + device-ID bytes. The regex must not match 'Galaxy Buds3 FE'. Galaxy Wearable app needed for extras (ANC settings, EQ). Samsung Company ID 0x0075 was not checked against a source for this model, so left null.",
+    "verifiedOnDevice": false
+  },
+  "pairingSteps": [
+    "Put both earbuds in the charging case (if the earbud light does not flash, charge the case for 10+ minutes).",
+    "Close the case lid, then open it. The earbuds enter Bluetooth pairing mode automatically; on Samsung phones a connect pop-up appears.",
+    "On other phones, turn on Bluetooth and pick 'Galaxy Buds FE' from the list (or use the Galaxy Wearable app).",
+    "If they are not found or already paired to another device: leave them in the open case and touch and hold both earbuds for more than 3 seconds. The earbud lights flash red and green in pairing mode.",
+    "Pairing mode turns off after 3 minutes; close and reopen the case to try again."
+  ],
+  "sources": {
+    "specs": [
+      "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-graphite-sm-r400nzaaeua/",
+      "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-white-sm-r400nzwaeua/",
+      "https://doi-product-assets.s3.amazonaws.com/pub/User-Manual/1078654787.pdf",
+      "https://en.wikipedia.org/wiki/Samsung_Galaxy_Buds_series"
+    ],
+    "pairing": [
+      "https://doi-product-assets.s3.amazonaws.com/pub/User-Manual/1078654787.pdf",
+      "https://www.soundguys.com/how-to-connect-samsung-galaxy-buds-fe-106623/"
+    ],
+    "bluetoothName": [
+      "https://github.com/timschneeb/GalaxyBudsClient/blob/master/GalaxyBudsClient/Model/Specifications/DeviceSpecHelper.cs",
+      "https://www.samsung.com/levant/support/mobile-devices/how-do-i-change-the-display-name-of-my-galaxy-buds/"
+    ]
+  },
+  "images": [
+    {
+      "file": "samsung_buds_fe_01.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-fe-review-101795/",
+      "view": "case open with graphite buds inside, cable and ear tips, top-down on wooden table (white case)"
+    },
+    {
+      "file": "samsung_buds_fe_02.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-fe-review-101795/",
+      "view": "hand holding closed white case, front/bottom with USB-C port"
+    },
+    {
+      "file": "samsung_buds_fe_03.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-fe-review-101795/",
+      "view": "fingers holding one graphite earbud, back/outer view, case blurred behind"
+    },
+    {
+      "file": "samsung_buds_fe_04.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-fe-review-101795/",
+      "view": "open empty white case, two graphite buds lying in front, top-down on wooden table"
+    },
+    {
+      "file": "samsung_buds_fe_05.jpg",
+      "source": "https://www.soundguys.com/samsung-galaxy-buds-fe-review-101795/",
+      "view": "person wearing graphite earbud in right ear, side profile"
+    },
+    {
+      "file": "samsung_buds_fe_06.jpg",
+      "source": "https://www.rtings.com/headphones/reviews/samsung/galaxy-buds-fe-truly-wireless",
+      "view": "closed white case beside two graphite buds, front view on light table"
+    },
+    {
+      "file": "samsung_buds_fe_07.jpg",
+      "source": "https://headphones.com/blogs/reviews/samsung-buds-fe-review-the-tws-earbuds-i-thought-i-wanted",
+      "view": "closed white case on dark fabric next to water bottle"
+    },
+    {
+      "file": "samsung_buds_fe_08.jpg",
+      "source": "https://headphones.com/blogs/reviews/samsung-buds-fe-review-the-tws-earbuds-i-thought-i-wanted",
+      "view": "open case with graphite buds inside, on concrete outdoors"
+    },
+    {
+      "file": "samsung_buds_fe_09.jpg",
+      "source": "https://headphones.com/blogs/reviews/samsung-buds-fe-review-the-tws-earbuds-i-thought-i-wanted",
+      "view": "two graphite buds side by side on wooden rail, outdoor bokeh"
+    },
+    {
+      "file": "samsung_buds_fe_10.jpg",
+      "source": "https://headphones.com/blogs/reviews/samsung-buds-fe-review-the-tws-earbuds-i-thought-i-wanted",
+      "view": "closed white case with graphite buds beside it, on concrete"
+    },
+    {
+      "file": "samsung_buds_fe_11.jpg",
+      "source": "https://headphones.com/blogs/reviews/samsung-buds-fe-review-the-tws-earbuds-i-thought-i-wanted",
+      "view": "unboxing flat lay: retail box, closed case, buds, USB-C cable, ear/wing tips"
+    },
+    {
+      "file": "samsung_buds_fe_12.jpg",
+      "source": "https://headphones.com/blogs/reviews/samsung-buds-fe-review-the-tws-earbuds-i-thought-i-wanted",
+      "view": "open case with graphite buds inside, standing on laptop keyboard"
+    },
+    {
+      "file": "samsung_buds_fe_13.jpg",
+      "source": "https://headphones.com/blogs/reviews/samsung-buds-fe-review-the-tws-earbuds-i-thought-i-wanted",
+      "view": "open case with graphite buds inside, side angle on rock"
+    },
+    {
+      "file": "samsung_buds_fe_14.jpg",
+      "source": "https://www.scarbir.com/tws/samsung-galaxy-buds-fe-review",
+      "view": "open empty case with graphite buds in front, on mossy bricks"
+    },
+    {
+      "file": "samsung_buds_fe_15.jpg",
+      "source": "https://www.scarbir.com/tws/samsung-galaxy-buds-fe-review",
+      "view": "graphite earbud worn in ear, close-up side view"
+    },
+    {
+      "file": "samsung_buds_fe_16.jpg",
+      "source": "https://www.digitaltrends.com/home-theater/samsung-galaxy-buds-fe-review/",
+      "view": "close-up of graphite buds (outer and inner/tip side) in front of open case, wooden table"
+    },
+    {
+      "file": "samsung_buds_fe_17.jpg",
+      "source": "https://www.digitaltrends.com/home-theater/samsung-galaxy-buds-fe-review/",
+      "view": "close-up of open case with graphite buds seated inside, wooden table"
+    },
+    {
+      "file": "samsung_buds_fe_18.jpg",
+      "source": "https://www.digitaltrends.com/home-theater/samsung-galaxy-buds-fe-review/",
+      "view": "open case with graphite buds inside, among potted plants"
+    },
+    {
+      "file": "samsung_buds_fe_19.jpg",
+      "source": "https://www.digitaltrends.com/home-theater/samsung-galaxy-buds-fe-review/",
+      "view": "man wearing graphite earbud, side profile outdoors"
+    },
+    {
+      "file": "samsung_buds_fe_20.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-white-sm-r400nzwaeua/",
+      "view": "product shot: white buds side view, black background"
+    },
+    {
+      "file": "samsung_buds_fe_21.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-white-sm-r400nzwaeua/",
+      "view": "product shot: closed white case, angled, USB-C port visible, black background"
+    },
+    {
+      "file": "samsung_buds_fe_22.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-white-sm-r400nzwaeua/",
+      "view": "product shot: white case open, white buds inside, top view, black background"
+    },
+    {
+      "file": "samsung_buds_fe_23.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-graphite-sm-r400nzaaeua/",
+      "view": "product shot: graphite buds inner side (tips, charging contacts), black background"
+    },
+    {
+      "file": "samsung_buds_fe_24.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-graphite-sm-r400nzaaeua/",
+      "view": "product shot: graphite buds angled pair, black background"
+    },
+    {
+      "file": "samsung_buds_fe_25.jpg",
+      "source": "https://www.samsung.com/uk/audio-sound/galaxy-buds/galaxy-buds-fe-graphite-sm-r400nzaaeua/",
+      "view": "official marketing render: two white buds floating on mint background"
+    },
+    {
+      "file": "samsung_buds_fe_26.jpg",
+      "source": "https://alexreviewstech.com/samsung-galaxy-buds-fe-review-nicely-balanced/",
+      "view": "close-up of two white buds, inner side (L/R, ear tips, wing tips on top), open white case behind, wooden table"
+    },
+    {
+      "file": "samsung_buds_fe_27.jpg",
+      "source": "https://alexreviewstech.com/samsung-galaxy-buds-fe-review-nicely-balanced/",
+      "view": "two white buds with wing tips beside closed white case, weathered wooden table"
+    },
+    {
+      "file": "samsung_buds_fe_28.jpg",
+      "source": "https://alexreviewstech.com/samsung-galaxy-buds-fe-review-nicely-balanced/",
+      "view": "open empty case of White version (white interior), wooden table outdoors"
+    },
+    {
+      "file": "samsung_buds_fe_29.jpg",
+      "source": "https://toomanyadapters.com/samsung-galaxy-buds-fe-review/",
+      "view": "single graphite bud with wing tip in open palm, retail box behind"
+    },
+    {
+      "file": "samsung_buds_fe_30.jpg",
+      "source": "https://toomanyadapters.com/samsung-galaxy-buds-fe-review/",
+      "view": "two graphite buds alone on wooden table, wing tips visible"
+    },
+    {
+      "file": "samsung_buds_fe_31.jpg",
+      "source": "https://toomanyadapters.com/samsung-galaxy-buds-fe-review/",
+      "view": "open white case with one graphite bud inside, other bud beside it, wooden table"
+    },
+    {
+      "file": "samsung_buds_fe_32.jpg",
+      "source": "https://www.androidpolice.com/samsung-galaxy-buds-fe-review/",
+      "view": "close-up of two graphite buds showing wing tips and ear tips, orange background"
+    },
+    {
+      "file": "samsung_buds_fe_33.jpg",
+      "source": "https://www.androidpolice.com/samsung-galaxy-buds-fe-review/",
+      "view": "two graphite buds with wing tips lying in front of open white case, blue painted rail"
+    },
+    {
+      "file": "samsung_buds_fe_34.jpg",
+      "source": "https://www.sammobile.com/samsung/galaxy-buds-fe/review/",
+      "view": "hand holding graphite bud (wing tip visible) next to open white case with other bud"
+    },
+    {
+      "file": "samsung_buds_fe_35.jpg",
+      "source": "https://www.techadvisor.com/article/2174756/samsung-galaxy-buds-fe-review.html",
+      "view": "two graphite buds alone on wooden table, one showing inner side with tip, wing tips visible"
+    }
+  ]
+}
